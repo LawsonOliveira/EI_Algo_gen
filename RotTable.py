@@ -1,5 +1,6 @@
-import mathutil
+import mathutils
 import math
+import numpy as np
 
 
 class RotTable:
@@ -29,7 +30,7 @@ class RotTable:
     def __init__(self):
         self.__Rot_Table = {}
         for dinucleotide in RotTable.__ORIGINAL_ROT_TABLE:
-            self.__Rot_Table[dinucleotide] = RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][:3]
+            self.__Rot_Table[dinucleotide] = [np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
 
     ###################
     # WRITING METHODS #
