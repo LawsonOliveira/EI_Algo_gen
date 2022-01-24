@@ -75,18 +75,52 @@ def initialisation_population():  # Initialize the population ,
     pass
 
 
-critere = True  # a modifier
+class GA:
+    """
+    Classe permettant d'éxécuter un algorithme génétique sur un problème d'optimisation.
+    """
 
+    def __init__(self, pop_cap, nb_var, fitness_fnct):
+        """
+        Sauvegarde les hyper-paramètres de l'algorithme, et crée la population initiale.
 
-def Algogenetique():
-    # ici
-    pop = initialisation_population()
+        Paramètres :
+        - pop_cap (int) : Nombre d'individus de la population
+        - nb_var (int) : Taille du génome des individus
+        - fitness_fnct (function) : Fonction objective à minimiser
+        """
+        # Sauvegarde des hyper-paramètres
+        self.pop_cap = pop_cap
+        self.nb_var = nb_var
+        self.fitness_fnct = fitness_fnct
 
-    while critere:  # Critere has to be defined
-        va = pop.evaluation()
+    def ini_pop(self):
+        pass
 
-        pop1 = pop.selection(pop, va)
-        pop1 = pop.mutation()
-        pop = pop1
+    def selection(self, ind1, ind2):
+        pass
 
-    return pop
+    def mutation(self, ind, mut_rate,
+                 bound_inf=None, bound_sup=None):
+
+        return ind
+
+    def evaluation(self):
+        """ évalue le génome actuelle"""
+
+    def do_gen(self):
+        """
+        Calcule la génération N+1 à partir de la génération N.
+        """
+        pass
+
+    def evaluerGA():
+        pop = initialisation_population()
+        while critere:  # Critere has to be defined
+            va = pop.evaluation()
+
+            pop1 = pop.selection(pop, va)
+            pop1 = pop.mutation()
+            pop = pop1
+
+        return pop
