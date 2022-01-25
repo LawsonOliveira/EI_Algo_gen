@@ -31,17 +31,19 @@ class RotTable:
     def __init__(self):
         self.__Rot_Table = {}
         for dinucleotide in RotTable.__ORIGINAL_ROT_TABLE:
+            #iniciate the values randomly
             self.__Rot_Table[dinucleotide] = [np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
 
     def mut(self,k):
         #change the values asociated to the self.__Rot_Table[nucleotide] with nucleotide being the k_th nucleotide in the original table
         dinucleotide=RotTable.nucleotidlist[k]
         self.__Rot_Table[dinucleotide]=[np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
-    
+                
     ###################
     # WRITING METHODS #
     ###################
-
+    def writeTable(self,table):
+        self.__Rot_Table=table
     ###################
     # READING METHODS #
     ###################
@@ -55,7 +57,15 @@ class RotTable:
     def getDirection(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][2]
 
+    def getTable(self):
+        return self.__Rot_Table
+    
+    def newTable(self,fil):
+        self.__Rot_Table=fil
     ###################
 
 
 print("on est passée ")
+
+
+
