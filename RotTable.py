@@ -60,3 +60,6 @@ class RotTable:
 
 
 print("on est passée ")
+
+
+
