@@ -38,9 +38,25 @@ def selection(pob,D,n):
         new_pob.append(pob[i])
     return new_pob
 
-def crossover(pob):
-    return pob
-
+def crossover(bests):
+    index={i:i for i in range(len(bests))}
+    fil={}
+    fils=[]
+    taille=10
+    while len(index)>0:
+        i=random.choice(index)
+        index.pop(i)
+        j=random.choice(index)
+        index.pop(j)
+        print(index)
+        for n in range(taille):
+            for dinucleotide_pere in bests[i]:
+                for dinucleotide_mere in bests[j]:
+                    fil[dinucleotide_pere]=random.choice([bests[i][dinucleotide_pere],bests[j][dinucleotide_mere]])
+            fils.append(fil)
+            fil={}
+    return fils
+        
 def pickbest(pob,D):
     #Picks the best individual from pob
     i=np.argmin(D)
