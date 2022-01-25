@@ -55,7 +55,7 @@ def crossover(bests):
             for dinucleotide_pere in all_nuclets[i]:
                 for dinucleotide_mere in all_nuclets[j]:
                     fil[dinucleotide_pere]=random.choice([all_nuclets[i][dinucleotide_pere],all_nuclets[j][dinucleotide_mere]])
-            fils.append(fil)
+            fils.append(newTable(fil))
             fil={}
     return fils
         
