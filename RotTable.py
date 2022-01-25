@@ -3,6 +3,8 @@ import math
 import numpy as np
 
 
+
+
 class RotTable:
     """Represents the rotation table"""
 
@@ -32,7 +34,7 @@ class RotTable:
         for dinucleotide in RotTable.__ORIGINAL_ROT_TABLE:
             self.__Rot_Table[dinucleotide] = [np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
 
-    ###################
+
     # WRITING METHODS #
     ###################
 
@@ -53,3 +55,6 @@ class RotTable:
 
 
 print("on est passée ")
+
+
+
