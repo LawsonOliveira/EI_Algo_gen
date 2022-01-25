@@ -1,4 +1,5 @@
 from Traj3D import *
+from random import *
 
 class node:  # Generic tree node
 
