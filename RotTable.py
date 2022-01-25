@@ -42,7 +42,8 @@ class RotTable:
     ###################
     # WRITING METHODS #
     ###################
-
+    def writeTable(self,table):
+        self.__Rot_Table=table
     ###################
     # READING METHODS #
     ###################
@@ -55,7 +56,9 @@ class RotTable:
 
     def getDirection(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][2]
-
+    
+    def getTable(self):
+        return self.__Rot_Table
     ###################
 
 

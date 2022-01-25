@@ -33,7 +33,7 @@ def mutation(pob):
 def selection(pob,D,n):
     #Chooses the better half of the population
     new_pob=[]
-    for j in range(int(n/2)):
+    for j in range(int(n/10)):
         i=np.argmin(D)
         new_pob.append(pob[i])
     return new_pob
@@ -42,18 +42,19 @@ def crossover(bests):
     index={i:i for i in range(len(bests))}
     fil={}
     fils=[]
-    taille=10
-    while len(index)>0:
-        i=random.choice(index)
+    taille=10*len(bests)
+    while len(index)>1:
+        i=random.choice(list(index.values()))
         index.pop(i)
-        j=random.choice(index)
+        j=random.choice(list(index.values()))
         index.pop(j)
-        print(index)
         for n in range(taille):
-            for dinucleotide_pere in bests[i]:
-                for dinucleotide_mere in bests[j]:
-                    fil[dinucleotide_pere]=random.choice([bests[i][dinucleotide_pere],bests[j][dinucleotide_mere]])
-            fils.append(fil)
+            for dinucleotide_pere in bests[i].getTable():
+                for dinucleotide_mere in bests[j].getTable():
+                    fil[dinucleotide_pere]=random.choice([bests[i].getTable()[dinucleotide_pere],bests[j].getTable()[dinucleotide_mere]])
+            a=RotTable()
+            a.writeTable(fil)
+            fils.append(a)
             fil={}
     return fils
         
@@ -86,8 +87,8 @@ def darwin(pob,n,k,seq):
         
 
 def main():
-    n=10
-    k=1
+    n=100
+    k=10
     pob = genesis(n)
     traj = Traj3D()
 
@@ -96,12 +97,11 @@ def main():
         lineList = [line.rstrip('\n') for line in open(args.filename)]
         # Formatting
         seq = ''.join(lineList[1:])
-        
-
-        traj.compute(seq, rot_table)
+        best_ind=darwin(pob,n,k,seq)
+        traj.compute(seq,best_ind)
     else:
-        best_ind=darwin(pob,n,k,"AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAG")
-        traj.compute("AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAG", best_ind)
+        best_ind=darwin(pob,n,k,"AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGAAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAG")
+        traj.compute("AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGAAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAG", best_ind)
 
     print(traj.getTraj())
 
