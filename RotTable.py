@@ -31,6 +31,7 @@ class RotTable:
     def __init__(self):
         self.__Rot_Table = {}
         for dinucleotide in RotTable.__ORIGINAL_ROT_TABLE:
+            #iniciate the values randomly
             self.__Rot_Table[dinucleotide] = [np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
 
     def mut(self,k):

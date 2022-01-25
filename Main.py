@@ -15,21 +15,23 @@ def bernoulli(p):
         return 0
 
 def genesis(n):
-    #n is the number of individuals
+    #n is the number of individuals. Creates n RotTable objects
     pob=[RotTable() for i in range(n)]
     return pob
 
 
 def mutation(pob):
+    #Applies mutations tu the population
     p=0.05 #change this equation please
     for i in pob:
         if bernoulli(p)==1:
             for j in range(3): #three is the number of mutations. Can be changed
                 u=random.randint(0,15)
-                i.mut(u)
+                i.mut(u)       #Applies a mutation to a single individual in a single nucleotid
     return pob
                 
 def selection(pob,D,n):
+    #Chooses the better half of the population
     new_pob=[]
     for j in range(int(n/2)):
         i=np.argmin(D)
@@ -40,19 +42,21 @@ def crossover(pob):
     return pob
 
 def pickbest(pob,D):
+    #Picks the best individual from pob
     i=np.argmin(D)
     return pob[i]
 
 def darwin(pob,n,k,seq):
     #takes a poblation and a the number of repetitions k
-    trajs=[Traj3D() for i in range(n)]
+    trajs=[Traj3D() for i in range(n)]         #initialize the trajs
+    D=[0 for m in range(n)]                    #initialize the vector that has the distances
+
     for i in range(k):
-        D=[0 for m in range(n)]
         for j in range(n):
-            trajs[j].compute(seq,pob[j])
-            xyz = np.array(trajs[j].getTraj())
+            trajs[j].compute(seq,pob[j])        #calculates each traj
+            xyz = np.array(trajs[j].getTraj())  
             x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
-            D[j]=np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2 )
+            D[j]=np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2 ) #calculates the distance from the tip of the chain to the center
             
         pob=selection(pob,D,n)
         pob=crossover(pob)
