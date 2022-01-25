@@ -1,12 +1,12 @@
-#For computing
+# For computing
 import mathutils
 import math
 
-#For drawing
+# For drawing
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import collections  as mc
+from matplotlib import collections as mc
 
 
 class Traj3D:
@@ -37,15 +37,15 @@ class Traj3D:
             dinucleotide = dna_seq[i-1]+dna_seq[i]
             # On remplit au fur et à mesure les matrices de rotation
             if dinucleotide not in matrices_Rz:
-                matrices_Rz[dinucleotide] = mathutils.Matrix.Rotation(math.radians(rot_table.getTwist(dinucleotide)/2), 4, 'Z')
+                matrices_Rz[dinucleotide] = mathutils.Matrix.Rotation(
+                    math.radians(rot_table.getTwist(dinucleotide)/2), 4, 'Z')
                 matrices_Q[dinucleotide] = \
                     mathutils.Matrix.Rotation(math.radians((rot_table.getDirection(dinucleotide)-90)), 4, 'Z') \
                     @ mathutils.Matrix.Rotation(math.radians((-rot_table.getWedge(dinucleotide))), 4, 'X') \
                     @ mathutils.Matrix.Rotation(math.radians((90-rot_table.getDirection(dinucleotide))), 4, 'Z')
 
-
             # On calcule les transformations géométrique selon le dinucleotide courant, et on les ajoute à la matrice totale
-            total_matrix =  total_matrix @ \
+            total_matrix = total_matrix @ \
                 self.__MATRIX_T \
                 @ matrices_Rz[dinucleotide] \
                 @ matrices_Q[dinucleotide] \
@@ -55,13 +55,16 @@ class Traj3D:
             # On calcule la position du nucléotide courant en appliquant toutes les transformations géométriques à la position du premier nucléotide
             self.__Traj3D.append(total_matrix @ self.__Traj3D[0])
 
-
     def draw(self, filename):
         xyz = np.array(self.__Traj3D)
         self.__Traj3D = []
-        x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
+        x, y, z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot(x,y,z)
+        ax.plot(x, y, z)
         plt.show()
         plt.savefig(filename)
+
+    def getmatrix(self):
+        return np.array(self.__Traj3D)
+# Montecarlo il faut discrétiser?

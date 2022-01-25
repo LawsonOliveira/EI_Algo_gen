@@ -59,6 +59,7 @@ class chromosome:
     def getDirection(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][2]
 
+    def traj3D.compute(self, dna_seq, self.rot_table)
     ###################
 
 
@@ -114,7 +115,7 @@ class GA:
         """
         pass
 
-    def evaluerGA():
+    def compute():
         pop = initialisation_population()
         while critere:  # Critere has to be defined
             va = pop.evaluation()
@@ -124,3 +125,19 @@ class GA:
             pop = pop1
 
         return pop
+
+# Liste à trois dimensions
+
+
+def fit1(trajchromosome1, trajchromosome2):
+    def distance(point1, point2):
+        return (point1[0]-point2[0])**2 + (point1[1]-point2[1])**2 + (point1[2]-point2[2])**2
+    # Distance associé aux normes euclidiennes
+    return distance(trajchromosome1, trajchromosome2)
+
+
+# Méta donnée Pc
+def selection(pop):
+    # Liste de population
+    pop = sorted(words, key=fit)  # On ordonne selon la fonction len
+    evaluerpop(pop, fit)
