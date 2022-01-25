@@ -14,7 +14,7 @@ def bernoulli(p):
     else:
         return 0
 
-def poblation(n):
+def genesis(n):
     #n is the number of individuals
     pob=[RotTable() for i in range(n)]
     return pob
@@ -32,7 +32,7 @@ def mutation(pob):
 def selection(pob,D,n):
     new_pob=[]
     for j in range(int(n/2)):
-        i=i=np.argmin(D)
+        i=np.argmin(D)
         new_pob.append(pob[i])
     return new_pob
 
@@ -53,9 +53,10 @@ def darwin(pob,n,k,seq):
             xyz = np.array(trajs[j].getTraj())
             x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
             D[j]=np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2 )
-            pob=selection(pob,D,n)
-            pob=crossover(pob)
-            pob=mutation(pob)
+            
+        pob=selection(pob,D,n)
+        pob=crossover(pob)
+        pob=mutation(pob)
 
 
 
@@ -65,9 +66,9 @@ def darwin(pob,n,k,seq):
         
 
 def main():
-    n=1000
+    n=10
     k=1
-    pob = poblation(n)
+    pob = genesis(n)
     traj = Traj3D()
 
     if args.filename:
