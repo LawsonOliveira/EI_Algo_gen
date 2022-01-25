@@ -1,4 +1,5 @@
 from math import sqrt
+from MonteCarlo import *
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
     "AC": [34.4, 1.1,  143, ],
@@ -23,39 +24,16 @@ Rn: a node have a value, a successor function
 Tree can chose his successor+ """
 
 
-class node(object):  # Generic tree node
-    "Generic tree node."
-
-    def __init__(self):
-
-        self.valeur = 0  # Valeur associé
-        self.children = []  # Liste des children
-
-    def __repr__(self):
-        return self.name
-
-    def add_child(self, node):
-        assert isinstance(node, Tree)
-        self.children.append(node)
-
-    def getvalue(self):
-        return self.valeur
-
-
-t = node()
-print(t.getvalue())
-
-
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
 
 def selection(node, K=1):
     childlist = node.getchildren()  # list of children
     Nchild = len(childlist)  # The len of the child to have
-    N = node.score()  # THe value of the father
+    N = node.getvalue()  # THe value of the father
 
     def valuebandit(child):  # Return the Bandit value
-        score = child.score()  # Value do to the fit function
+        score = child.getvalue()  # Value do to the fit function
         nbseen = child.getn()  # Nb of this time the son has been visited
 
         # ATTENTION ON RECUPERE UN SCORE MAXIMAL ICI ET PAS UN SCORE MINIMAL, LA FORMULE DAN NOTRE CAS EST FAUSSE
@@ -131,7 +109,7 @@ def compute(root, nbit, critere=10**-3):
 
     dive = root
 
-    while dive.child[] != []:
+    while dive.child() != []:
 
         # CARE MIN OR MAX , evaluer fonction non fait
         dive = max(dive.child, key=evaluerfonction)
