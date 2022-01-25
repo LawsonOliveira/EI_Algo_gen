@@ -30,7 +30,11 @@ def mutation(pob):
     return pob
                 
 def selection(pob,D,n):
-    return pob
+    new_pob=[]
+    for j in range(int(n/2)):
+        i=i=np.argmin(D)
+        new_pob.append(pob[i])
+    return new_pob
 
 def crossover(pob):
     return pob
