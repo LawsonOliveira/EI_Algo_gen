@@ -27,7 +27,7 @@ class RotTable:
         "TG": [34.5, 3.5,   64,      0.9, 34, 0],
         "TT": [35.62, 7.2,  154,      0.06,  0.6, 0]
     }
-    nucleotidlist=["AA","AC","AG","AT","CA","CC","CG","CT","GA","GC","GG","GT","TA","TC","TG","TT",]
+    nucleotidlist=["AA","AC","AG","AT","CA","CC","CG","CT","GA","GC","GG","GT","TA","TC","TG","TT"]
     def __init__(self):
         self.__Rot_Table = {}
         for dinucleotide in RotTable.__ORIGINAL_ROT_TABLE:
