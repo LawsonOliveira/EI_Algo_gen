@@ -32,18 +32,19 @@ class RotTable:
         self.__Rot_Table = {}
         for dinucleotide in RotTable.__ORIGINAL_ROT_TABLE:
             #iniciate the values randomly
-            self.__Rot_Table[dinucleotide] = [np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
+            #self.__Rot_Table[dinucleotide] = [np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
+            self.__Rot_Table[dinucleotide] = [np.random.uniform(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0]-RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0]+RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1]-RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1]+RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]-RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][5],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]+RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
 
     def mut(self,k):
         #change the values asociated to the self.__Rot_Table[nucleotide] with nucleotide being the k_th nucleotide in the original table
         dinucleotide=RotTable.nucleotidlist[k]
-        self.__Rot_Table[dinucleotide]=[np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
-                
+        #self.__Rot_Table[dinucleotide]=[np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
+        self.__Rot_Table[dinucleotide] = [np.random.uniform(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0]-RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][0]+RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1]-RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][1]+RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]-RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][5],RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][2]+RotTable.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
+        return self.__Rot_Table
+
     ###################
     # WRITING METHODS #
     ###################
-    def writeTable(self,table):
-        self.__Rot_Table=table
     ###################
     # READING METHODS #
     ###################
@@ -51,11 +52,20 @@ class RotTable:
     def getTwist(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][0]
 
+    def getSRTwist(self,dinucleotide):
+        return self.__Rot_Table[dinucleotide][3]
+
     def getWedge(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][1]
 
+    def getSRWedge(self,dinucleotide):
+        return self.__Rot_Table[dinucleotide][4]
+
     def getDirection(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][2]
+
+    def getSRDirection(self,dinucleotide):
+        return self.__Rot_Table[dinucleotide][5]
 
     def getTable(self):
         return self.__Rot_Table
