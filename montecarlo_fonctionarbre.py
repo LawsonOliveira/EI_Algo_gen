@@ -57,7 +57,7 @@ def createchild(node, m):
     # Here two things we want:
     hnew = h % (nbnucleotide*nbangle)
 
-    nuc = nb.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
+    nuc = node.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
 
     # Now we have to create the childe
     # __intervals[key]
@@ -129,8 +129,8 @@ def expansion(node):
 
         ak = evaluate(child)  # non plus
 
-        child.__valeur = ak  # The value we got
-        child.__h = node.__h+1  # Add the depth
+        child.writeValeur(ak)   # The value we got
+        child.actualisen(node.__h+1)  # Add the depth
 
         valevaluate.append(ak)
 
@@ -139,7 +139,6 @@ def expansion(node):
     m = max(valevaluate)
     node.__valeur = m  # We modify the value of the node
     return m  # We return the value of the node
-    # Here, the question is how we expand ?
 
 
 def backpropagation(node):  # Algorithme  finale de backpropagation

@@ -75,7 +75,7 @@ class node:  # Generic tree node
 
     # """
 
-    def __init__(self, table):
+    def __init__(self, table=__ORIGINAL_ROT_TABLE, interval=__ORIGINAL_INTERVALS):
 
         self.__Rot_Table = table  # to complete
 
@@ -83,7 +83,7 @@ class node:  # Generic tree node
         self.__n = 0          # number of time we chose this node
         self.__h = 0          # Height of the tree
         self.__Childs = []
-        self.__intervals = __ORIGINAL_INTERVALS
+        self.__intervals = interval
 
     def add_child(self, node):
         self.__Childs.append(node)
@@ -92,10 +92,11 @@ class node:  # Generic tree node
         # dict is the dictionary that will inserted in the Rot_Table of self
         # has the shape {"AA": [154, 7, -154], "GC":[40, 5,  180, ]}
         for key in dict:
+            assert key in self.__Rot_Table
             self.__Rot_Table[key] = dict[key]
 
     def writeValeur(self, idk):  # don't know what to put here
-        pass
+        self.__valeur = idk
 
     def calculateD(self, seq):  # Calculate Traj 3D
         traj = Traj3D()
@@ -110,8 +111,11 @@ class node:  # Generic tree node
     def getTable(self):
         return self.__Rot_Table
 
-    def actualizeN(self):
-        pass
+    def actualizen(self, k):
+        self.__n = k
+
+    def actualizeh(self, m):
+        self.__h = m
 
     def shuffle(self):
         pass
