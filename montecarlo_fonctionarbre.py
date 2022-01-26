@@ -40,11 +40,11 @@ def selection(node, K=1):
         nbseen = child.getn()  # Nb of this time the son has been visited
 
         # ATTENTION ON RECUPERE UN SCORE MAXIMAL ICI ET PAS UN SCORE MINIMAL, LA FORMULE DAN NOTRE CAS EST FAUSSE
-        return score/nbseen + K*sqrt(3/2*ln(N)/nbseen)
+        return score/nbseen + K*sqrt(3/2*np.log(N)/nbseen)
         # Constnate K est louche
     # return the best in childlist who has the best value over bandit
     childchoisi = max(childlist, key=valuebandit)
-    childchoisi.modn = nbseen+1  # Don't forget to add the time we add the chose of child
+    childchoisi.wirten(childchoisi.getn()+1)  # Don't forget to add the time we add the chose of child
     return childchoisi
 
 
@@ -57,10 +57,10 @@ def createchild(node, m):
     # Here two things we want:
     hnew = h % (nbnucleotide*nbangle)
 
-    nuc = nb.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
+    nuc = node.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
 
     # Now we have to create the childe
-    __ORIGINAL_INTERVALS[key]
+    node.__ORIGINAL_INTERVALS[key]
 
     for i in range(m):
         n_nodes = nodes()
