@@ -220,7 +220,7 @@ def main():
     expansion(noeud)
     print(noeud.getvalue(), "his value")
     print(noeud.getvalue())
-    print("ces enfantes", noeud.getchild())
+
     print("pitié ça marche")
 
 
