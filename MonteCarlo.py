@@ -8,25 +8,6 @@ class node:  # Generic tree node
 
     #"Generic tree node."
     __ORIGINAL_ROT_TABLE = {
-<<<<<<< HEAD
-        "AA": [35.62, 7.2, -154, ],
-        "AC": [34.4, 1.1,  143, ],
-        "AG": [27.7, 8.4,    2, ],
-        "AT": [31.5, 2.6,    0, ],
-        "CA": [34.5, 3.5,  -64, ],
-        "CC": [33.67, 2.1,  -57, ],
-        "CG": [29.8, 6.7,    0, ],
-        "CT": [27.7, 8.4,   -2, ],
-        "GA": [36.9, 5.3,  120, ],
-        "GC": [40, 5,  180, ],
-        "GG": [33.67, 2.1,   57, ],
-        "GT": [34.4, 1.1, -143, ],
-        "TA": [36, 0.9,    0, ],
-        "TC": [36.9, 5.3, -120, ],
-        "TG": [34.5, 3.5,   64, ],
-        "TT": [35.62, 7.2,  154, ]}
-
-=======
         "AA": [35.62, 7.2, -154,      0.06,  0.6, 0],
         "AC": [34.4, 1.1,  143,      1.3,  5, 0],
         "AG": [27.7, 8.4,    2,      1.5,  3, 0],
@@ -55,7 +36,6 @@ class node:  # Generic tree node
                                     [__ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5],
                                     __ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5]]
                                     ]
->>>>>>> 415280bf83f0f2a0ce5bb4145689432ffef5ff6e
     # Exemple de représentation
     # """  Use a  tree to search in protein folding
     # We have 2 class: a tree and nodes
@@ -94,13 +74,10 @@ class node:  # Generic tree node
 
     # """
 
-    def __init__(self,table):
+    def __init__(self,table=__ORIGINAL_ROT_TABLE):
 
-<<<<<<< HEAD
         self.__Rot_Table = {}  # to complete
-=======
         self.__Rot_Table=table #to complete
->>>>>>> 415280bf83f0f2a0ce5bb4145689432ffef5ff6e
 
         self.__valeur = 0  # score of the function
         self.__n = 0          # number of time we chose this node
@@ -129,20 +106,19 @@ class node:  # Generic tree node
     def getvalue(self):  # return the score of the function
         return self.__valeur
 
-<<<<<<< HEAD
     def getn(self):
-        return n
+        return self.__n
 
     def getchildren(self):
         return self.__Childs
 
-    def actualizeh(self):  # actualize the height
-=======
+    def actualizeh(self,h):  # actualize the height
+        self.__h=h
+    
     def getTable(self):
         return self.__Rot_Table
     
     def actualizeN(self):
->>>>>>> 415280bf83f0f2a0ce5bb4145689432ffef5ff6e
         pass
     
     def shuffle(self):
