@@ -2,9 +2,8 @@ import numpy as np
 from math import sqrt
 
 from numpy import angle
+# from EI_Algo_gen.RotTable import RotTable
 from MonteCarlo import *
-from RotTable import RotTable
-from Traj3D import *
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
     "AC": [34.4, 1.1,  143, ],
@@ -31,15 +30,15 @@ Tree can chose his successor+ """
 
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
-
 def fit(dict, seq):
-    a=RotTable()
+    a = RotTable()
     a.writeTable(dict)
-    traj=Traj3D()
-    traj.compute(seq,a)
-    xyz = np.array(traj.getTraj()) 
-    x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
+    traj = Traj3D()
+    traj.compute(seq, a)
+    xyz = np.array(traj.getTraj())
+    x, y, z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     return np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2)
+
 
 def selection(node, K=1):
     childlist = node.getchildren()  # list of children
@@ -94,40 +93,43 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
     min = (-1)
     Rot_table = {}
     h = node.geth()  # getH
-    print(node)
-    for nuc in node.__intervals:
+
+    interval = node.getinterval()  # we get back the interval
+    for nuc in interval:
 
         Rot_table[nuc] = {}
+
     for k in range(nbsample):  # Question is how much sample we want to study
 
         samplestudied = {}
-        for nuc in node.intervals:
+
+        for nuc in interval:  # Pour chaque nucléotide
             samplestudied[node] = []
 
-            for anglestudied in node.__intervals[nuc]:
-                lbound = node.__intervals[nuc][anglestudied][0]
-                hbound = node.__intervals[nuc][anglestudied][1]
+            for anglestudied in interval[nuc]:  # Pour chaque angle
+                print("anglestudied", anglestudied, "interval", nuc)
+                lbound = anglestudied[0]
+                hbound = anglestudied[1]
                 assert lbound < hbound
                 ak = np.random.uniform(lbound, hbound)
 
                 samplestudied[node].append(ak)
+
             # May be unusufull
 
             # Pour se conformer à la fit fonction
             samplestudied[node] = samplestudied[node] + \
-                node.__ORIGINAL_ROT_TABLE[nuc][4:]
-
-        # Here we have a possible rot_table
+                Rot_Table[nuc][4:]
 
         # Evaluation of the sample, SEE GENETIC ALGORITHM
         value = fit(samplestudied)
 
-        if (min == -1) or value > node.getvalue():
-            node.value = value
+        if (min == -1) or value > min:
+
+            node.writeValeur(value)  # We write the new value
             min = value
             # We modify the Rot_table right now
             node.writeRot_table(samplestudied)
-            node.writeValeur(value)  # We write the new value
 
 
 # NON FAIT CREATE CHILD, EVALUATE
@@ -213,4 +215,7 @@ def main():
 
 
 if __name__ == "__main__":
+
+    a = node()
+    Rot_Table = a.getoriginalrotable()  # TAKE THIS AS GLOBAL VARIABLE
     main()
