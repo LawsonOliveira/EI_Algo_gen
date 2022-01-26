@@ -33,9 +33,9 @@ class node:  # Generic tree node
             [__ORIGINAL_ROT_TABLE[key][0]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][3],
              __ORIGINAL_ROT_TABLE[key][0]+np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][3]],
             [__ORIGINAL_ROT_TABLE[key][1]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][4],
-             __ORIGINAL_ROT_TABLE[key][1]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][4]],
+             __ORIGINAL_ROT_TABLE[key][1]+np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][4]],
             [__ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5],
-             __ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5]]
+             __ORIGINAL_ROT_TABLE[key][2]+np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5]]
         ]
     # Exemple de représentation
     # """  Use a  tree to search in protein folding
