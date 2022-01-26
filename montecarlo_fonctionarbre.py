@@ -60,18 +60,18 @@ def createchild(node, m):
     nuc = nb.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
 
     # Now we have to create the childe
-    __ORIGINAL_INTERVALS[key]
+    # __intervals[key]
 
     for i in range(m):
         n_nodes = nodes()
 
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
-        n_nodes.__ORIGINAL_INTERVALS = nodes.__ORIGINAL_INTERVALS.copy()
+        n_nodes.__intervals = nodes.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
-        b = node.__ORIGINAL_INTERVALS[nuc][anglestudied][1]
-        a = node.__ORIGINAL_INTERVALS[nuc][anglestudied][0]  # The lowest one
-        n_nodes.__ORIGINAL_INTERVALS[nuc][anglestudied] = [
+        b = node.__intervals[nuc][anglestudied][1]
+        a = node.__intervals[nuc][anglestudied][0]  # The lowest one
+        n_nodes.__intervals[nuc][anglestudied] = [
             a + (b-a)*i/m, a + (b-a)*(i+1)/m]
         node.add_child(n_nodes)
 
@@ -84,15 +84,15 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
     h = node.geth()  # getH
     for nuc in node.intervals:
         Rot_table[nuc] = {}
-    for k in range(nbsample):
+    for k in range(nbsample):  # Question is how much sample we want to study
 
         samplestudied = {}
         for nuc in node.intervals:
             samplestudied[node] = []
 
             for anglestudied in node.intervals[nuc]:
-                lbound = node.__ORIGINAL_INTERVALS[nuc][anglestudied][0]
-                hbound = node.__ORIGINAL_INTERVALS[nuc][anglestudied][1]
+                lbound = node.__intervals[nuc][anglestudied][0]
+                hbound = node.__intervals[nuc][anglestudied][1]
                 assert lbound < hbound
                 ak = np.random.uniform(lbound, hbound)
 
@@ -190,3 +190,12 @@ def compute(root, nbit, critere=10**-3):
 
 
 # APPEND  copie superficielle
+
+
+def main():
+    noeud = node()
+    print(noeud)
+
+
+if __name__ == "__main__":
+    main()
