@@ -198,11 +198,12 @@ def compute(root, nbit, critere=10**-3):
     nbiteration = 0
     print("initialisation", value)
     print()
-    while value == 0 or (nbiteration < nbit and abs(value) > critere):
+    while nbiteration < nbit and abs(value) > critere:
         backpropagation(root)  # We backpropagation like always
         value = root.getvalue()
         print(" nbiteration", nbiteration)
         print("value", value)
+        nbiteration += 1
 
     # on a donc le graphe final
 
@@ -226,7 +227,7 @@ def main():
     noeud = node()
     nbit = 100  # HYPERPARAMETRE
     best = compute(noeud, nbit)
-    print(noeud.getvalue(), "his value")
+    #print(noeud.getvalue(), "his value")
     print(noeud.getvalue(), "la value")
     print(noeud.getchild(), "les momes")
     traj = Traj3D
