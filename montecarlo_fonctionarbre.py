@@ -64,11 +64,11 @@ def selection(node, K=1):
 
 
 # m mean how we gonna split the interval in many parts, we create here m Child
-def createchild(node1, m):
-    #  On créer un enfant
+def createchild(node1, m=10):
+    #  On créer m enfants
     nbnucleotide = 16  # nb of nucleotide
     nbangle = 3
-    h = node1.geth() + 1  # The depth of the cild
+    h = node1.geth() + 1  # The depth of the child
     # Here two things we want:
     hnew = h % (nbnucleotide*nbangle)
 
@@ -84,10 +84,13 @@ def createchild(node1, m):
         n_nodes.__intervals = node1.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
-        b = node1.__intervals[nuc][anglestudied][1]
+
+        b = node1.getinterval(nuc, anglestudied)
+        node1.__intervals[nuc][anglestudied][1]
         a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
         n_nodes.actualiseinterval(
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
+        # The value we got
         node1.add_child(n_nodes)
 
 
@@ -149,10 +152,8 @@ def expansion(node):
     for k in range(N):
         # We create a child , IT DEPENDS WHAT WE DO HERE
         child = createchild(node)
-        ak = evaluate(child)
-
-        child.writeValeur(ak)   # The value we got
-        child.actualiseh(h+1)  # Add the depth
+        ak = evaluate(n_nodes)
+        child.writeValeur(ak)
 
         valevaluate.append(ak)
 
