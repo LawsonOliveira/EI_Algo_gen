@@ -120,9 +120,21 @@ class node:  # Generic tree node
     def shuffle(self):
         pass
 
+    def geth(self):
+        return self.__h
+
+    def getinterval(self):
+        return self.__intervals
+
+    def getintervalspec(self, nuc, angle):
+        return self.__intervals[nuc][angle]
+
+    def actualiseinterval(self, nuc, angle, value):
+        self.__intervals[nuc][angle] = value
+
 
 test = node()
-print(test.getvalue())
+print(test.__intervals)
 
 # """
 #    def fit_node(self):

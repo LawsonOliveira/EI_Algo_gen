@@ -64,11 +64,7 @@ def createchild(node1, m):
     # __intervals[key]
 
     for i in range(m):
-<<<<<<< HEAD
-        n_nodes = node()
-=======
         n_nodes = node1()
->>>>>>> 17d42af4038d36d5ab54a03ee1a3c6ff4f64141a
 
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
         n_nodes.__intervals = node1.__intervals.copy()
@@ -87,7 +83,9 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
     min = (-1)
     Rot_table = {}
     h = node.geth()  # getH
-    for nuc in node.intervals:
+    print(node)
+    for nuc in node.__intervals:
+
         Rot_table[nuc] = {}
     for k in range(nbsample):  # Question is how much sample we want to study
 
@@ -95,7 +93,7 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
         for nuc in node.intervals:
             samplestudied[node] = []
 
-            for anglestudied in node.intervals[nuc]:
+            for anglestudied in node.__intervals[nuc]:
                 lbound = node.__intervals[nuc][anglestudied][0]
                 hbound = node.__intervals[nuc][anglestudied][1]
                 assert lbound < hbound
@@ -125,6 +123,7 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
 def expansion(node):
     # here node doesn't have child
     assert node.child == []
+    print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
     N = 100  # Number of child we create
     valevaluate = []  # list of score of each son
@@ -198,7 +197,8 @@ def compute(root, nbit, critere=10**-3):
 
 def main():
     noeud = node()
-    print(noeud)
+    evaluate(noeud)
+    print(noeud.__valeur)
 
 
 if __name__ == "__main__":
