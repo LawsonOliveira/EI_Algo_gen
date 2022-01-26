@@ -24,10 +24,12 @@ class node:  # Generic tree node
         "TC": [36.9, 5.3, -120,      0.9,  6, 0],
         "TG": [34.5, 3.5,   64,      0.9, 34, 0],
         "TT": [35.62, 7.2,  154,      0.06,  0.6, 0]
-        }
-    nucleotidlist=["AA","AC","AG","AT","CA","CC","CG","CT","GA","GC","GG","GT","TA","TC","TG","TT"]
-    __ORIGINAL_INTERVALS={}
+    }
+    nucleotidlist = ["AA", "AC", "AG", "AT", "CA", "CC", "CG",
+                     "CT", "GA", "GC", "GG", "GT", "TA", "TC", "TG", "TT"]
+    __ORIGINAL_INTERVALS = {}
     for key in __ORIGINAL_ROT_TABLE:
+<<<<<<< HEAD
         __ORIGINAL_INTERVALS[key]=  [ 
                                     [__ORIGINAL_ROT_TABLE[key][0]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][3],
                                      __ORIGINAL_ROT_TABLE[key][0]+np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][3] ],
@@ -36,6 +38,16 @@ class node:  # Generic tree node
                                     [__ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5],
                                     __ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5]]
                                     ]
+=======
+        __ORIGINAL_INTERVALS[key] = [
+            [__ORIGINAL_ROT_TABLE[key][0]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][3],
+             __ORIGINAL_ROT_TABLE[key][0]+np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][3]],
+            [__ORIGINAL_ROT_TABLE[key][1]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][4],
+             __ORIGINAL_ROT_TABLE[key][1]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][4]],
+            [__ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5],
+             __ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5]]
+        ]
+>>>>>>> 13b8589afceee694d1417c760e083a8c021ca42a
     # Exemple de représentation
     # """  Use a  tree to search in protein folding
     # We have 2 class: a tree and nodes
@@ -74,15 +86,22 @@ class node:  # Generic tree node
 
     # """
 
+<<<<<<< HEAD
     def __init__(self,table=__ORIGINAL_ROT_TABLE):
 
         self.__Rot_Table = {}  # to complete
         self.__Rot_Table=table #to complete
+=======
+    def __init__(self, table):
+
+        self.__Rot_Table = table  # to complete
+>>>>>>> 13b8589afceee694d1417c760e083a8c021ca42a
 
         self.__valeur = 0  # score of the function
         self.__n = 0          # number of time we chose this node
         self.__h = 0          # Height of the tree
         self.__Childs = []
+        self.__intervals = __ORIGINAL_INTERVALS
 
     def add_child(self, node):
         self.__Childs.append(node)
@@ -106,6 +125,7 @@ class node:  # Generic tree node
     def getvalue(self):  # return the score of the function
         return self.__valeur
 
+<<<<<<< HEAD
     def getn(self):
         return self.__n
 
@@ -115,12 +135,14 @@ class node:  # Generic tree node
     def actualizeh(self,h):  # actualize the height
         self.__h=h
     
+=======
+>>>>>>> 13b8589afceee694d1417c760e083a8c021ca42a
     def getTable(self):
         return self.__Rot_Table
-    
+
     def actualizeN(self):
         pass
-    
+
     def shuffle(self):
         pass
 
