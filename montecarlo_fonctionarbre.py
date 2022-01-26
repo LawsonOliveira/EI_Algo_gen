@@ -76,32 +76,23 @@ def createchild(node1, m=10):
 
     # Now we have to create the childe
     # __intervals[key]
+
     node1.actualizen(node1.getn()+m)
     anglestudied = hnew % 3
     b = node1.getinterval()[nuc][anglestudied][1]
-    a = node1.getinterval()[nuc][anglestudied][0] 
+    a = node1.getinterval()[nuc][anglestudied][0]
     for i in range(m):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
-<<<<<<< HEAD
-        n_nodes.__intervals = node1.__intervals.copy()
-        anglestudied = hnew % 3  # we take which angle we gonna modify
-        # the upper limit of the interval
-
-        b = node1.getinterval(nuc, anglestudied)
-        node1.__intervals[nuc][anglestudied][1]
-        a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
         n_nodes.actualiseinterval(
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
-        # The value we got
-=======
-        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
->>>>>>> 400ad0a4f4c675953b3eaf2935e0781d6cf23343
+        evaluate(n_nodes)
+
         node1.add_child(n_nodes)
 
 
-def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of children
+def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
 
     # Nb of sample we get
     min = (-1)
@@ -153,22 +144,25 @@ def expansion(node):
     assert node.getchild() == [], 'No a feather'
     print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
-    N = 100  # Number of child we create
+    N = 10  # Number of child we create
     valevaluate = []  # list of score of each son
     h = node.geth()
-    for k in range(N):
-        # We create a child , IT DEPENDS WHAT WE DO HERE
-        child = createchild(node)
-        ak = evaluate(n_nodes)
-        child.writeValeur(ak)
 
+    # We create a child , IT DEPENDS WHAT WE DO HERE
+    createchild(node, N)  # Create child creates N child to the "node" node
+
+    childlist = node.getchild()
+    for child in childlist:
+        ak = child.getvalue()
         valevaluate.append(ak)
+    # Don't forget to add the child
 
-        # Don't forget to add the child
-        node.add_child(child)
     m = max(valevaluate)
-    node.writeValeur(m)   # We modify the value of the node
-    return m  # We return the value of the node
+    u = node.getvalue()
+    if u == 0 or m > u():
+
+        node.writeValeur(m)   # We modify the value of the node
+    return max(u, m)  # We return the value of the node
 
 
 def backpropagation(node):  # Algorithme  finale de backpropagation
@@ -225,8 +219,8 @@ def main():
     noeud = node()
     expansion(noeud)
     print(noeud.getvalue(), "his value")
-    print(noeud.__Childs)
-
+    print(noeud.getvalue())
+    print("ces enfantes", noeud.getchild())
     print("pitié ça marche")
 
 
