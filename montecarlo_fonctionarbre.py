@@ -41,17 +41,18 @@ def fit(dict, seq):
     traj.compute(seq, a)
     xyz = np.array(traj.getTraj())
     x, y, z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
-    return np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2)
+    # BEWARE THE MINUS WE  HAVE TO MAXIMIZE THE FUNCTION
+    return -np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2)
 
 
 def selection(node, K=1):
     childlist = node.getChilds()  # list of children
     Nchild = len(childlist)  # The len of the child to have
-    N = node.getvalue()  # THe value of the father
+    N = node.getn()  # THe value of the father
 
     def valuebandit(child):  # Return the Bandit value
         score = child.getvalue()  # Value do to the fit function
-        nbseen = child.getn()+1 # Nb of this time the son has been visited
+        nbseen = child.getn()+1  # Nb of this time the son has been visited
 
         # ATTENTION ON RECUPERE UN SCORE MAXIMAL ICI ET PAS UN SCORE MINIMAL, LA FORMULE DAN NOTRE CAS EST FAUSSE
         return score/nbseen + K*np.sqrt(3/2*np.log(N)/nbseen)
@@ -85,7 +86,6 @@ def createchild(node1, m=10):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
-<<<<<<< HEAD
         n_nodes.actualiseinterval(
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
         evaluate(n_nodes)
@@ -94,14 +94,6 @@ def createchild(node1, m=10):
 
 
 def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
-=======
-        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
-        evaluate(n_nodes)
-        node1.add_child(n_nodes)
-
-
-def evaluate(node, nbsample=100):  # evaluate a node, by taking a lot of children
->>>>>>> 93796f9c59b73bb59d598f96054f43efc3c5f411
 
     # Nb of sample we get
     min = (-1)
@@ -167,7 +159,7 @@ def expansion(node):
 
     m = max(valevaluate)
     u = node.getvalue()
-    if u == 0 or m > u():
+    if u == 0 or m > u:
 
         node.writeValeur(m)   # We modify the value of the node
     return max(u, m)  # We return the value of the node
@@ -176,15 +168,18 @@ def expansion(node):
 def backpropagation(node):  # Algorithme  finale de backpropagation
     securityrope = []  # To hinder recursivity
     visiter = node
-
-    while visiter.child != []:
-        securityrope.append(visiter)  # It has children
+    childvisiter = visiter.getchild()
+    securityrope.append(visiter)
+    while childvisiter != []:
+        # It has children
 
         nvavister = selection(visiter)  # We chose a new children
-        visiter = nvavister  # Then the new node we are looking is visiter
 
+        visiter = nvavister  # Then the new node we are looking is visiter
+        childvisiter = nvavister.getchild()
+        securityrope.append(visiter)
     term = securityrope[-1]  # The last one is a feather
-    value = expansion(node)  # EXPANSIONNNN
+    value = expansion(term)  # EXPANSIONNNN
     # Time to BACKPEDAL
     for node in securityrope:
         nodeval = node.getvalue()  # we take the value of the node we are looking at
@@ -201,9 +196,13 @@ def compute(root, nbit, critere=10**-3):
 
     value = root.getvalue()  # Value of the first root, MUST NOT BE 0 WATCH OUT
     nbiteration = 0
-
-    while nbiteration < nbit and value > critere:
+    print("initialisation", value)
+    print()
+    while value == 0 or (nbiteration < nbit and abs(value) > critere):
         backpropagation(root)  # We backpropagation like always
+        value = root.getvalue()
+        print(" nbiteration", nbiteration)
+        print("value", value)
 
     # on a donc le graphe final
 
@@ -211,31 +210,30 @@ def compute(root, nbit, critere=10**-3):
 
     dive = root
     print(" le plus dur est passée, on récupère le mnimum ")
-    while dive.getchildren() != []:
+    while dive.getchild() != []:
 
         # CARE MIN OR MAX , evaluer fonction non fait
         # EVALUATION FONCTION PAS FAIT
         dive = max(dive.__childs, key=evaluerfonction)
 
-    return dive.sampleevalue()  # Return the best sample we ever had
+    return dive.getTable()  # Return the best sample we ever had
 
 
 # APPEND  copie superficielle
 
 
 def main():
-<<<<<<< HEAD
     noeud = node()
-    expansion(noeud)
+    nbit = 100  # HYPERPARAMETRE
+    best = compute(noeud, nbit)
     print(noeud.getvalue(), "his value")
-    print(noeud.getvalue())
-=======
-    test = node()
-    evaluate(test)
-    createchild(test,10)
-    selection(test)
->>>>>>> 93796f9c59b73bb59d598f96054f43efc3c5f411
+    print(noeud.getvalue(), "la value")
+    print(noeud.getchild(), "les momes")
+    traj = Traj3D
 
+    traj = Traj3D
+    traj.compute(seq, best)
+    traj.draw("MONRESULTAT.png")
     print("pitié ça marche")
 
 
