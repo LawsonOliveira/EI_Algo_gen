@@ -111,6 +111,9 @@ class node:  # Generic tree node
     def getTable(self):
         return self.__Rot_Table
 
+    def geth(self):
+        return self.__h
+
     def actualizen(self, k):
         self.__n = k
 
