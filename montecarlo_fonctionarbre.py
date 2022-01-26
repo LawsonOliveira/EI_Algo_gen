@@ -54,19 +54,19 @@ def expansion(node):
     valevaluate = []  # list of score of each son
     for k in range(N):
         # We create a child , IT DEPENDS WHAT WE DO HERE
-        child = createchild(node)
+        child = createchild(node)  # NONFAIT
 
-        ak = evaluate(child)
+        ak = evaluate(child)  # non plus
 
-        child.score = ak  # The value we got
-        child.depth = node.depth+1  # Add the depth
+        child.__valeur = ak  # The value we got
+        child.__h = node.__h+1  # Add the depth
 
         valevaluate.append(ak)
 
         # Don't forget to add the child
-        node.ajouterchild(child)
+        node.add_child(child)
     m = max(valevaluate)
-    node.modscore = m  # We modify the value of the node
+    node.__valeur = m  # We modify the value of the node
     return m  # We return the value of the node
     # Here, the question is how we expand ?
 
@@ -79,7 +79,7 @@ def backpropagation(node):  # Algorithme  finale de backpropagation
         securityrope.append(visiter)  # It has children
 
         nvavister = selection(visiter)  # We chose a new children
-        visiter = nvisiter  # Then the new node we are looking is visiter
+        visiter = nvavister  # Then the new node we are looking is visiter
 
     term = securityrope[-1]  # The last one is a feather
     value = expansion(node)  # EXPANSIONNNN
@@ -88,7 +88,7 @@ def backpropagation(node):  # Algorithme  finale de backpropagation
         nodeval = node.getvalue()  # we take the value of the node we are looking at
 
         if nodeval > value:
-            node.modvalue = value
+            node.__value = value
     return  # We return nothing, we don't care about it
 
 
@@ -108,11 +108,12 @@ def compute(root, nbit, critere=10**-3):
     #  On récupère la solution
 
     dive = root
-
-    while dive.child() != []:
+    print(" le plus dur est passée, on récupère le mnimum ")
+    while dive.getchildren() != []:
 
         # CARE MIN OR MAX , evaluer fonction non fait
-        dive = max(dive.child, key=evaluerfonction)
+        # EVALUATION FONCTION PAS FAIT
+        dive = max(dive.__childs, key=evaluerfonction)
 
     return dive.sampleevalue()  # Return the best sample we ever had
 
