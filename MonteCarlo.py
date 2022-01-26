@@ -135,6 +135,9 @@ class node:  # Generic tree node
     def getoriginalrotable(self):
         return self.__ORIGINAL_ROT_TABLE
 
+    def getchild(self):
+        return self.__Childs
+
 
 # """
 #    def fit_node(self):

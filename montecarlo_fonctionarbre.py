@@ -1,6 +1,6 @@
 import numpy as np
 from math import sqrt
-
+from RotTable import RotTable
 from numpy import angle
 # from EI_Algo_gen.RotTable import RotTable
 from MonteCarlo import *
@@ -26,13 +26,17 @@ __ORIGINAL_ROT_TABLE = {
 We have 2 class: a tree and nodes
 Rn: a node have a value, a successor function
 Tree can chose his successor+ """
+# Hyperparameter
 
+seq = "AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGTTGGGGACTGCTTAACCGGGTAACTGGCTTGGTGGAGCACAGATACCAAATACTGTCCTTCTAGTGTAGCCGCAGTTAGGCCACCACTTCAAGAACTCTTAATATCTCAATCCACCTTGTCCAGTTACCAGTGGCTGCTGCCAGTGGCGCTTTGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAGCCGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTATGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAACGGCGCAGCCTTTTCCTGGTTCTCGTTTTTTGCTCACATGTTTCTTTTGGCGTTATCCCCTGATTCTGTGGATAACCGCATCTCCGCTTTTGAGTGAGCAGACACCGCTCGCCGCAGCCGAACGACCGAGTGTAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCGGAACGTGCATTTTCTCCTTACGCATCTGTGCGGCATTTCACATCGGACATGGTGCGCTTTCCATACAATTCGTACTGATGCCGCATAGTTAAGCCAGTATACACTCCGCTATCGCTACGTGACTGGTTCAGGGCTTCGCCCCGAAACCCCCTGACGCGCCCTGAGGGGCTTGTCTGCTCCCGGCATCCGCTCACAGACAAGCTGTTACCGTCTCCGGGAGCTGTATGTGTCAGAGGTTTTCACCGTCATCCCCGAAGCGTGCGA"
 
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
+
 def fit(dict, seq):
     a = RotTable()
-    a.writeTable(dict)
+    a.newTable(dict)
+
     traj = Traj3D()
     traj.compute(seq, a)
     xyz = np.array(traj.getTraj())
@@ -82,7 +86,8 @@ def createchild(node1, m):
         # the upper limit of the interval
         b = node1.__intervals[nuc][anglestudied][1]
         a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
-        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
+        n_nodes.actualiseinterval(
+            nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
         node1.add_child(n_nodes)
 
 
@@ -103,57 +108,58 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
         samplestudied = {}
 
         for nuc in interval:  # Pour chaque nucléotide
-            samplestudied[node] = []
+            samplestudied[nuc] = []
 
             for anglestudied in interval[nuc]:  # Pour chaque angle
-                print("anglestudied", anglestudied, "interval", nuc)
+                #print("anglestudied", anglestudied, "interval", nuc)
                 lbound = anglestudied[0]
                 hbound = anglestudied[1]
-                assert lbound < hbound
+                assert lbound <= hbound, ' intervalle pas bien '
                 ak = np.random.uniform(lbound, hbound)
 
-                samplestudied[node].append(ak)
+                samplestudied[nuc].append(ak)
 
             # May be unusufull
 
             # Pour se conformer à la fit fonction
-            samplestudied[node] = samplestudied[node] + \
+            samplestudied[nuc] = samplestudied[nuc] + \
                 Rot_Table[nuc][4:]
 
         # Evaluation of the sample, SEE GENETIC ALGORITHM
-        value = fit(samplestudied)
+        #print("samplestudied", samplestudied)
+        value = fit(samplestudied, seq)
 
         if (min == -1) or value > min:
 
             node.writeValeur(value)  # We write the new value
             min = value
             # We modify the Rot_table right now
-            node.writeRot_table(samplestudied)
+            node.writeRot_Table(samplestudied)
 
 
 # NON FAIT CREATE CHILD, EVALUATE
 def expansion(node):
     # here node doesn't have child
-    assert node.child == []
+    assert node.getchild() == [], 'No a feather'
     print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
     N = 100  # Number of child we create
     valevaluate = []  # list of score of each son
+    h = node.geth()
     for k in range(N):
         # We create a child , IT DEPENDS WHAT WE DO HERE
-        child = createchild(node)  # NONFAIT
-
-        ak = evaluate(child)  # non plus
+        child = createchild(node)
+        ak = evaluate(child)
 
         child.writeValeur(ak)   # The value we got
-        child.actualisen(node.__h+1)  # Add the depth
+        child.actualiseh(h+1)  # Add the depth
 
         valevaluate.append(ak)
 
         # Don't forget to add the child
         node.add_child(child)
     m = max(valevaluate)
-    node.__valeur = m  # We modify the value of the node
+    node.writeValeur(m)   # We modify the value of the node
     return m  # We return the value of the node
 
 
@@ -209,8 +215,11 @@ def compute(root, nbit, critere=10**-3):
 
 def main():
     noeud = node()
-    evaluate(noeud)
-    print(noeud.__valeur)
+    expansion(noeud)
+    print(noeud.getvalue(), "his value")
+    print(noeud.__Childs)
+
+    print("pitié ça marche")
 
 
 if __name__ == "__main__":
