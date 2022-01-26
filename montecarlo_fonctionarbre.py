@@ -45,16 +45,16 @@ def fit(dict, seq):
 
 
 def selection(node, K=1):
-    childlist = node.getchildren()  # list of children
+    childlist = node.getChilds()  # list of children
     Nchild = len(childlist)  # The len of the child to have
     N = node.getvalue()  # THe value of the father
 
     def valuebandit(child):  # Return the Bandit value
         score = child.getvalue()  # Value do to the fit function
-        nbseen = child.getn()  # Nb of this time the son has been visited
+        nbseen = child.getn()+1 # Nb of this time the son has been visited
 
         # ATTENTION ON RECUPERE UN SCORE MAXIMAL ICI ET PAS UN SCORE MINIMAL, LA FORMULE DAN NOTRE CAS EST FAUSSE
-        return score/nbseen + K*sqrt(3/2*np.log(N)/nbseen)
+        return score/nbseen + K*np.sqrt(3/2*np.log(N)/nbseen)
         # Constnate K est louche
     # return the best in childlist who has the best value over bandit
     childchoisi = max(childlist, key=valuebandit)
@@ -85,6 +85,7 @@ def createchild(node1, m=10):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
+<<<<<<< HEAD
         n_nodes.actualiseinterval(
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
         evaluate(n_nodes)
@@ -93,6 +94,14 @@ def createchild(node1, m=10):
 
 
 def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
+=======
+        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
+        evaluate(n_nodes)
+        node1.add_child(n_nodes)
+
+
+def evaluate(node, nbsample=100):  # evaluate a node, by taking a lot of children
+>>>>>>> 93796f9c59b73bb59d598f96054f43efc3c5f411
 
     # Nb of sample we get
     min = (-1)
@@ -131,7 +140,6 @@ def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
         value = fit(samplestudied, seq)
 
         if (min == -1) or value > min:
-
             node.writeValeur(value)  # We write the new value
             min = value
             # We modify the Rot_table right now
@@ -216,10 +224,17 @@ def compute(root, nbit, critere=10**-3):
 
 
 def main():
+<<<<<<< HEAD
     noeud = node()
     expansion(noeud)
     print(noeud.getvalue(), "his value")
     print(noeud.getvalue())
+=======
+    test = node()
+    evaluate(test)
+    createchild(test,10)
+    selection(test)
+>>>>>>> 93796f9c59b73bb59d598f96054f43efc3c5f411
 
     print("pitié ça marche")
 

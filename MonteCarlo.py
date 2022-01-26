@@ -150,6 +150,9 @@ class node:  # Generic tree node
 
     def getchild(self):
         return self.__Childs
+    
+    def writen(self,n):
+        self.__n=n
 
 
 # """
