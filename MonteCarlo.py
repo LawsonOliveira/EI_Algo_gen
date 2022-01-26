@@ -95,9 +95,6 @@ class node:  # Generic tree node
             assert key in self.__Rot_Table
             self.__Rot_Table[key] = dict[key]
 
-    def writeValeur(self, idk):  # don't know what to put here
-        self.__valeur = idk
-
     def calculateD(self, seq):  # Calculate Traj 3D
         traj = Traj3D()
         traj.compute(seq, self.__Rot_Table)
@@ -108,6 +105,9 @@ class node:  # Generic tree node
     def getvalue(self):  # return the score of the function
         return self.__valeur
 
+    def writeValeur(self, idk):  # don't know what to put here
+        self.__valeur = idk
+
     def getTable(self):
         return self.__Rot_Table
 
@@ -117,15 +117,24 @@ class node:  # Generic tree node
     def actualizen(self, k):
         self.__n = k
 
+    def geth(self):
+        return self.__h
+
     def actualizeh(self, m):
         self.__h = m
 
-    def shuffle(self):
-        pass
+    def getinterval(self):
+        return self.__intervals
 
+    def getintervalspec(self, nuc, angle):
+        return self.__intervals[nuc][angle]
 
-test = node()
-print(test.getvalue())
+    def actualiseinterval(self, nuc, angle, value):
+        self.__intervals[nuc][angle] = value
+
+    def getoriginalrotable(self):
+        return self.__ORIGINAL_ROT_TABLE
+
 
 # """
 #    def fit_node(self):

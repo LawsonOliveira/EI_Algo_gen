@@ -73,19 +73,17 @@ def createchild(node1, m):
 
     # Now we have to create the childe
     # __intervals[key]
-
+    node1.actualizen(node1.getn()+m)
     for i in range(m):
         n_nodes = node()
         n_nodes.actualizeh(h)
-
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
         n_nodes.__intervals = node1.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
         b = node1.__intervals[nuc][anglestudied][1]
         a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
-        n_nodes.__intervals[nuc][anglestudied] = [
-            a + (b-a)*i/m, a + (b-a)*(i+1)/m]
+        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
         node1.add_child(n_nodes)
 
 
@@ -95,7 +93,9 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
     min = (-1)
     Rot_table = {}
     h = node.geth()  # getH
-    for nuc in node.intervals:
+    print(node)
+    for nuc in node.__intervals:
+
         Rot_table[nuc] = {}
     for k in range(nbsample):  # Question is how much sample we want to study
 
@@ -103,7 +103,7 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
         for nuc in node.intervals:
             samplestudied[node] = []
 
-            for anglestudied in node.intervals[nuc]:
+            for anglestudied in node.__intervals[nuc]:
                 lbound = node.__intervals[nuc][anglestudied][0]
                 hbound = node.__intervals[nuc][anglestudied][1]
                 assert lbound < hbound
@@ -133,6 +133,7 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
 def expansion(node):
     # here node doesn't have child
     assert node.child == []
+    print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
     N = 100  # Number of child we create
     valevaluate = []  # list of score of each son
@@ -206,7 +207,8 @@ def compute(root, nbit, critere=10**-3):
 
 def main():
     noeud = node()
-    print(noeud)
+    evaluate(noeud)
+    print(noeud.__valeur)
 
 
 if __name__ == "__main__":
