@@ -50,7 +50,7 @@ def selection(node, K=1):
         nbseen = child.getn()  # Nb of this time the son has been visited
 
         # ATTENTION ON RECUPERE UN SCORE MAXIMAL ICI ET PAS UN SCORE MINIMAL, LA FORMULE DAN NOTRE CAS EST FAUSSE
-        return score/nbseen + K*sqrt(3/2*ln(N)/nbseen)
+        return score/nbseen + K*sqrt(3/2*np.log(N)/nbseen)
         # Constnate K est louche
     # return the best in childlist who has the best value over bandit
     childchoisi = max(childlist, key=valuebandit)
@@ -72,18 +72,17 @@ def createchild(node1, m):
 
     # Now we have to create the childe
     # __intervals[key]
-
+    node1.actualizen(node1.getn()+m)
     for i in range(m):
-        n_nodes = node1()
-
+        n_nodes = node()
+        n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
         n_nodes.__intervals = node1.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
         b = node1.__intervals[nuc][anglestudied][1]
         a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
-        n_nodes.__intervals[nuc][anglestudied] = [
-            a + (b-a)*i/m, a + (b-a)*(i+1)/m]
+        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
         node1.add_child(n_nodes)
 
 
