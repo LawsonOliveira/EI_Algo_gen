@@ -84,20 +84,7 @@ def createchild(node1, m=10):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
-<<<<<<< HEAD
-        n_nodes.__intervals = node1.__intervals.copy()
-        anglestudied = hnew % 3  # we take which angle we gonna modify
-        # the upper limit of the interval
-
-        b = node1.getinterval(nuc, anglestudied)
-        node1.__intervals[nuc][anglestudied][1]
-        a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
-        n_nodes.actualiseinterval(
-            nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
-        # The value we got
-=======
         n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
->>>>>>> 400ad0a4f4c675953b3eaf2935e0781d6cf23343
         node1.add_child(n_nodes)
 
 
