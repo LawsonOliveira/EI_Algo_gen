@@ -1,10 +1,9 @@
 import numpy as np
 from math import sqrt
-
-from numpy import angle
-from MonteCarlo import *
 from RotTable import RotTable
-from Traj3D import *
+from numpy import angle
+# from EI_Algo_gen.RotTable import RotTable
+from MonteCarlo import *
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
     "AC": [34.4, 1.1,  143, ],
@@ -27,19 +26,23 @@ __ORIGINAL_ROT_TABLE = {
 We have 2 class: a tree and nodes
 Rn: a node have a value, a successor function
 Tree can chose his successor+ """
+# Hyperparameter
 
+seq = "AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGTTGGGGACTGCTTAACCGGGTAACTGGCTTGGTGGAGCACAGATACCAAATACTGTCCTTCTAGTGTAGCCGCAGTTAGGCCACCACTTCAAGAACTCTTAATATCTCAATCCACCTTGTCCAGTTACCAGTGGCTGCTGCCAGTGGCGCTTTGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAGCCGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTATGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAACGGCGCAGCCTTTTCCTGGTTCTCGTTTTTTGCTCACATGTTTCTTTTGGCGTTATCCCCTGATTCTGTGGATAACCGCATCTCCGCTTTTGAGTGAGCAGACACCGCTCGCCGCAGCCGAACGACCGAGTGTAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCGGAACGTGCATTTTCTCCTTACGCATCTGTGCGGCATTTCACATCGGACATGGTGCGCTTTCCATACAATTCGTACTGATGCCGCATAGTTAAGCCAGTATACACTCCGCTATCGCTACGTGACTGGTTCAGGGCTTCGCCCCGAAACCCCCTGACGCGCCCTGAGGGGCTTGTCTGCTCCCGGCATCCGCTCACAGACAAGCTGTTACCGTCTCCGGGAGCTGTATGTGTCAGAGGTTTTCACCGTCATCCCCGAAGCGTGCGA"
 
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
 
 def fit(dict, seq):
-    a=RotTable()
-    a.writeTable(dict)
-    traj=Traj3D()
-    traj.compute(seq,a)
-    xyz = np.array(traj.getTraj()) 
-    x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
+    a = RotTable()
+    a.newTable(dict)
+
+    traj = Traj3D()
+    traj.compute(seq, a)
+    xyz = np.array(traj.getTraj())
+    x, y, z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
     return np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2)
+
 
 def selection(node, K=1):
     childlist = node.getchildren()  # list of children
@@ -61,29 +64,40 @@ def selection(node, K=1):
 
 
 # m mean how we gonna split the interval in many parts, we create here m Child
-def createchild(node1, m):
-    #  On créer un enfant
+def createchild(node1, m=10):
+    #  On créer m enfants
     nbnucleotide = 16  # nb of nucleotide
     nbangle = 3
-    h = node1.geth() + 1  # The depth of the cild
+    h = node1.geth() + 1  # The depth of the child
     # Here two things we want:
     hnew = h % (nbnucleotide*nbangle)
 
-    nuc = node1.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
+    nuc = node.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
 
     # Now we have to create the childe
     # __intervals[key]
     node1.actualizen(node1.getn()+m)
+    anglestudied = hnew % 3
+    b = node1.getinterval()[nuc][anglestudied][1]
+    a = node1.getinterval()[nuc][anglestudied][0] 
     for i in range(m):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
+<<<<<<< HEAD
         n_nodes.__intervals = node1.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
-        b = node1.__intervals[nuc][anglestudied][1]
+
+        b = node1.getinterval(nuc, anglestudied)
+        node1.__intervals[nuc][anglestudied][1]
         a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
+        n_nodes.actualiseinterval(
+            nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
+        # The value we got
+=======
         n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
+>>>>>>> 400ad0a4f4c675953b3eaf2935e0781d6cf23343
         node1.add_child(n_nodes)
 
 
@@ -93,65 +107,67 @@ def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of childr
     min = (-1)
     Rot_table = {}
     h = node.geth()  # getH
-    print(node)
-    for nuc in node.__intervals:
+
+    interval = node.getinterval()  # we get back the interval
+    for nuc in interval:
 
         Rot_table[nuc] = {}
+
     for k in range(nbsample):  # Question is how much sample we want to study
 
         samplestudied = {}
-        for nuc in node.intervals:
-            samplestudied[node] = []
 
-            for anglestudied in node.__intervals[nuc]:
-                lbound = node.__intervals[nuc][anglestudied][0]
-                hbound = node.__intervals[nuc][anglestudied][1]
-                assert lbound < hbound
+        for nuc in interval:  # Pour chaque nucléotide
+            samplestudied[nuc] = []
+
+            for anglestudied in interval[nuc]:  # Pour chaque angle
+                #print("anglestudied", anglestudied, "interval", nuc)
+                lbound = anglestudied[0]
+                hbound = anglestudied[1]
+                assert lbound <= hbound, ' intervalle pas bien '
                 ak = np.random.uniform(lbound, hbound)
 
-                samplestudied[node].append(ak)
+                samplestudied[nuc].append(ak)
+
             # May be unusufull
 
             # Pour se conformer à la fit fonction
-            samplestudied[node] = samplestudied[node] + \
-                node.__ORIGINAL_ROT_TABLE[nuc][4:]
-
-        # Here we have a possible rot_table
+            samplestudied[nuc] = samplestudied[nuc] + \
+                Rot_Table[nuc][4:]
 
         # Evaluation of the sample, SEE GENETIC ALGORITHM
-        value = fit(samplestudied)
+        #print("samplestudied", samplestudied)
+        value = fit(samplestudied, seq)
 
-        if (min == -1) or value > node.getvalue():
-            node.value = value
+        if (min == -1) or value > min:
+
+            node.writeValeur(value)  # We write the new value
             min = value
             # We modify the Rot_table right now
-            node.writeRot_table(samplestudied)
-            node.writeValeur(value)  # We write the new value
+            node.writeRot_Table(samplestudied)
 
 
 # NON FAIT CREATE CHILD, EVALUATE
 def expansion(node):
     # here node doesn't have child
-    assert node.child == []
+    assert node.getchild() == [], 'No a feather'
     print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
     N = 100  # Number of child we create
     valevaluate = []  # list of score of each son
+    h = node.geth()
     for k in range(N):
         # We create a child , IT DEPENDS WHAT WE DO HERE
-        child = createchild(node)  # NONFAIT
-
-        ak = evaluate(child)  # non plus
-
-        child.writeValeur(ak)   # The value we got
-        child.actualisen(node.__h+1)  # Add the depth
+        child = createchild(node)
+        ak = evaluate(n_nodes)
+        child.writeValeur(ak)
 
         valevaluate.append(ak)
 
         # Don't forget to add the child
         node.add_child(child)
     m = max(valevaluate)
-    node.__valeur = m  # We modify the value of the node
+    node.writeValeur(m)   # We modify the value of the node
     return m  # We return the value of the node
 
 
@@ -207,9 +223,15 @@ def compute(root, nbit, critere=10**-3):
 
 def main():
     noeud = node()
-    evaluate(noeud)
-    print(noeud.__valeur)
+    expansion(noeud)
+    print(noeud.getvalue(), "his value")
+    print(noeud.__Childs)
+
+    print("pitié ça marche")
 
 
 if __name__ == "__main__":
+
+    a = node()
+    Rot_Table = a.getoriginalrotable()  # TAKE THIS AS GLOBAL VARIABLE
     main()
