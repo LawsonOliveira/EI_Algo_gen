@@ -72,15 +72,19 @@ def createchild(node1, m=10):
     # Here two things we want:
     hnew = h % (nbnucleotide*nbangle)
 
-    nuc = node1.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
+    nuc = node.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
 
     # Now we have to create the childe
     # __intervals[key]
     node1.actualizen(node1.getn()+m)
+    anglestudied = hnew % 3
+    b = node1.getinterval()[nuc][anglestudied][1]
+    a = node1.getinterval()[nuc][anglestudied][0] 
     for i in range(m):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
+<<<<<<< HEAD
         n_nodes.__intervals = node1.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
@@ -91,6 +95,9 @@ def createchild(node1, m=10):
         n_nodes.actualiseinterval(
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
         # The value we got
+=======
+        n_nodes.actualiseinterval(nuc,anglestudied,[a + (b-a)*i/m, a + (b-a)*(i+1)/m] )
+>>>>>>> 400ad0a4f4c675953b3eaf2935e0781d6cf23343
         node1.add_child(n_nodes)
 
 

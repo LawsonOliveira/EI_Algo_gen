@@ -3,6 +3,14 @@ from random import *
 import numpy as np
 #uniform(-.5, .5)
 
+def copy(dict):
+    res={}
+    for cle in dict:
+        res1=[]
+        for element in dict[cle]:
+            res1.append(element)
+        res[cle]=res1
+    return res
 
 class node:  # Generic tree node
 
@@ -75,6 +83,9 @@ class node:  # Generic tree node
 
     # """
 
+    
+
+
     def __init__(self, table=__ORIGINAL_ROT_TABLE, interval=__ORIGINAL_INTERVALS):
 
         self.__Rot_Table = table  # to complete
@@ -83,7 +94,7 @@ class node:  # Generic tree node
         self.__n = 0          # number of time we chose this node
         self.__h = 0          # Height of the tree
         self.__Childs = []
-        self.__intervals = node.__ORIGINAL_INTERVALS
+        self.__intervals = copy(node.__ORIGINAL_INTERVALS)
 
     def add_child(self, node):
         self.__Childs.append(node)
@@ -134,6 +145,9 @@ class node:  # Generic tree node
 
     def getoriginalrotable(self):
         return self.__ORIGINAL_ROT_TABLE
+    
+    def getChilds(self):
+        return self.__Childs
 
     def getchild(self):
         return self.__Childs
