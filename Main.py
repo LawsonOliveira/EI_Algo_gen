@@ -9,6 +9,7 @@ parser.parse_args()
 args = parser.parse_args()
 
 def bernoulli(p):
+    print(random.random)
     if random.random() < p:
         return 1
     else:
@@ -20,14 +21,6 @@ def genesis(n):
     return pob
                 
 def mutation(pob):
-    p=0.05 #change this equation please
-    for i in pob:
-        for k in range(len(i.getTable())):
-            if bernoulli(p)==1:
-                i.mut(k)       #Applies a mutation to a single individual in a single nucleotid
-    return pob
-
-def mutation2(pob):
     numb_of_dinucleotides=len(pob[0].getTable())
     p=0.05 #change this equation please
     n_mutates=int(len(pob)*numb_of_dinucleotides*p)
@@ -47,89 +40,8 @@ def selection(pob,D,n):
         new_pob.append(pob[i])
     return new_pob
 
-def crossover(bests):
-    index1={i:i for i in range(len(bests)//2)}
-    index2={j:j for j in range(len(bests))}
-    fil={}
-    fils=[]
-    n_fils=20
-    for k in range(len(bests)//2):
-    #while len(index1)>0:
-        i=random.choice(list(index1.values()))
-        index2.pop(i)
-        for n in range(n_fils):
-            j=random.choice(list(index2.values()))
-            for dinucleotide in bests[i].getTable():
-                fil[dinucleotide]=random.choice([bests[i].getTable()[dinucleotide],bests[j].getTable()[dinucleotide]])
-            a=RotTable()
-            a.newTable(fil)
-            fils.append(a)
-            fil={}
-        index2[i]=i
-        index1.pop(i)
-    return fils
-
 
 def crossover2(bests):
-    index={i:i for i in range(len(bests))}
-    fil={}
-    fils=[]
-    taille=10*len(bests)
-    while len(index)>1:
-        for n in range(taille):
-            i=random.choice(list(index.values()))
-            index.pop(i)
-            j=random.choice(list(index.values()))
-            coupe=random.randint(0,len(bests)-1)
-            counter=0
-            for dinucleotide in bests[i].getTable():
-                if counter<=coupe:
-                    fil[dinucleotide]=bests[i].getTable()[dinucleotide]
-                if counter>coupe:
-                    fil[dinucleotide]=bests[j].getTable()[dinucleotide]
-                counter+=1
-            a=RotTable()
-            a.newTable(fil)
-            fils.append(a)
-            fil={}
-            index[i]=i
-        index.pop(i)
-        index.pop(j)
-    return fils        
-
-
-def crossover3(bests):
-    index={i:i for i in range(len(bests))}
-    fil1,fil2={},{}
-    fils=[]
-    taille=10*len(bests)
-    while len(index)>1:
-        for n in range(taille//2):
-            i=random.choice(list(index.values()))
-            index.pop(i)
-            j=random.choice(list(index.values()))
-            coupe=random.randint(0,len(bests)-1)
-            counter=0
-            for dinucleotide in bests[i].getTable():
-                if counter<=coupe:
-                    fil1[dinucleotide]=bests[i].getTable()[dinucleotide]
-                    fil2[dinucleotide]=bests[j].getTable()[dinucleotide]
-                if counter>coupe:
-                    fil1[dinucleotide]=bests[j].getTable()[dinucleotide]
-                    fil2[dinucleotide]=bests[i].getTable()[dinucleotide]
-                counter+=1
-            a=RotTable()
-            a.newTable(fil1)
-            fils.append(a)
-            a.newTable(fil2)
-            fils.append(a)
-            fil1,fil2={},{}
-            index[i]=i
-        index.pop(i)
-        index.pop(j)
-    return fils
-
-def crossover4(bests):
     index1=[int(2*i) for i in range(len(bests)//2)]
     index2=[int(2*i+1) for i in range(len(bests)//2)]
     fil1,fil2={},{}
@@ -148,13 +60,45 @@ def crossover4(bests):
                     fil1[dinucleotide]=bests[j].getTable()[dinucleotide]
                     fil2[dinucleotide]=bests[i].getTable()[dinucleotide]
                 counter+=1
-        a=RotTable()
-        a.newTable(fil1)
-        fils.append(a)
-        a.newTable(fil2)
-        fils.append(a)
+        aux=RotTable()
+        aux.newTable(fil1)
+        fils.append(aux)
+        aux.newTable(fil2)
+        fils.append(aux)
         fil1,fil2={},{}
     return fils
+
+def crossover1(pere,mere,prob,keys):
+    enfant1,enfant2={},{}
+    pos=0
+    for key in keys:
+        if prob[pos]<0.5:
+            enfant1[key]=pere[pos]
+            enfant2[key]=mere[pos]
+        else:
+            enfant1[key]=mere[pos]
+            enfant2[key]=pere[pos]
+        pos+=1
+    return enfant1,enfant2
+
+def crossover(pere,mere):
+    c=random.randint(0,len(pere)-1)
+    enfant1=np.append(pere[:c],mere[c:])
+    enfant2=np.append(pere[c:],mere[:c])
+    return enfant1,enfant2
+
+def reproduction(bests):
+    index = [[random.randint(0,len(bests)-1),random.randint(0,len(bests)-1)] for i in range(int(len(bests)*10//2))]
+    enfants=[]
+    for i,j in index:
+        enfant1,enfant2=crossover(bests[i],bests[j])
+        table=RotTable()
+        table.newTable(enfant1)
+        enfants.append(table)
+        table.newTable(enfant2)
+        enfants.append(table)
+    return enfants
+
 
 
 def pickbest(pob,D):
@@ -168,9 +112,7 @@ def fitness(pob,n,D,seq):
         trajs[j].compute(seq,pob[j])        #calculates each traj
         xyz = np.array(trajs[j].getTraj())  
         x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
-        #D[j]=np.sqrt((x[-1])**2+(y[-1])**2+(z[-1])**2)#calculates the distance from the tip of the chain to the center
         D[j]=np.sqrt((x[-1])**2+(y[-1])**2+(z[-1])**2)+0.01*(np.dot(xyz[1],xyz[-1]+xyz[-2])+np.linalg.norm(xyz[1])*np.linalg.norm(xyz[-1]+xyz[-2]))#calculates the distance from the tip of the chain to the center
-
     return D
     
 
@@ -184,10 +126,13 @@ def darwin(pob,n,k,seq):
         #for i in range(k):
         pob=selection(pob,D,n)
         t0=time.time()
-        pob=crossover4(pob)
+        pob=reproduction(pob)
         t1=time.time()
         print(t1-t0)
-        pob=mutation2(pob)
+        pob=mutation(pob)
+        t2=time.time()
+
+        print(t2-t1)
         D=fitness(pob,n,copy.deepcopy(D),seq)
         best,distance_actuel=pickbest(pob,D)
         p+=1
