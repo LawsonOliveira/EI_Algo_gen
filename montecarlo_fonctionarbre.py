@@ -50,31 +50,35 @@ def selection(node, K=1):
 
 
 # m mean how we gonna split the interval in many parts, we create here m Child
-def createchild(node, m):
+def createchild(node1, m):
     #  On créer un enfant
     nbnucleotide = 16  # nb of nucleotide
     nbangle = 3
-    h = node.geth() + 1  # The depth of the cild
+    h = node1.geth() + 1  # The depth of the cild
     # Here two things we want:
     hnew = h % (nbnucleotide*nbangle)
 
-    nuc = node.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
+    nuc = node1.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
 
     # Now we have to create the childe
     # __intervals[key]
 
     for i in range(m):
+<<<<<<< HEAD
         n_nodes = node()
+=======
+        n_nodes = node1()
+>>>>>>> 17d42af4038d36d5ab54a03ee1a3c6ff4f64141a
 
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
-        n_nodes.__intervals = nodes.__intervals.copy()
+        n_nodes.__intervals = node1.__intervals.copy()
         anglestudied = hnew % 3  # we take which angle we gonna modify
         # the upper limit of the interval
-        b = node.__intervals[nuc][anglestudied][1]
-        a = node.__intervals[nuc][anglestudied][0]  # The lowest one
+        b = node1.__intervals[nuc][anglestudied][1]
+        a = node1.__intervals[nuc][anglestudied][0]  # The lowest one
         n_nodes.__intervals[nuc][anglestudied] = [
             a + (b-a)*i/m, a + (b-a)*(i+1)/m]
-        node.add_child(n_nodes)
+        node1.add_child(n_nodes)
 
 
 def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of children
