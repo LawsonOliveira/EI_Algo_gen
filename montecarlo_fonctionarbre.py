@@ -1,4 +1,7 @@
+import numpy as np
 from math import sqrt
+
+from numpy import angle
 from MonteCarlo import *
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
@@ -43,6 +46,74 @@ def selection(node, K=1):
     childchoisi = max(childlist, key=valuebandit)
     childchoisi.modn = nbseen+1  # Don't forget to add the time we add the chose of child
     return childchoisi
+
+
+# m mean how we gonna split the interval in many parts, we create here m Child
+def createchild(node, m):
+    #  On créer un enfant
+    nbnucleotide = 16  # nb of nucleotide
+    nbangle = 3
+    h = node.geth() + 1  # The depth of the cild
+    # Here two things we want:
+    hnew = h % (nbnucleotide*nbangle)
+
+    nuc = nb.nucleotidlist[hnew//3]  # The nucleotide we gonna have new
+
+    # Now we have to create the childe
+    __ORIGINAL_INTERVALS[key]
+
+    for i in range(m):
+        n_nodes = nodes()
+
+        # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
+        n_nodes.__ORIGINAL_INTERVALS = nodes.__ORIGINAL_INTERVALS.copy()
+        anglestudied = hnew % 3  # we take which angle we gonna modify
+        # the upper limit of the interval
+        b = node.__ORIGINAL_INTERVALS[nuc][anglestudied][1]
+        a = node.__ORIGINAL_INTERVALS[nuc][anglestudied][0]  # The lowest one
+        n_nodes.__ORIGINAL_INTERVALS[nuc][anglestudied] = [
+            a + (b-a)*i/m, a + (b-a)*(i+1)/m]
+        node.add_child(n_nodes)
+
+
+def evaluate(node, nbsample=1000):  # evaluate a node, by taking a lot of children
+
+    # Nb of sample we get
+    min = (-1)
+    Rot_table = {}
+    h = node.geth()  # getH
+    for nuc in node.intervals:
+        Rot_table[nuc] = {}
+    for k in range(nbsample):
+
+        samplestudied = {}
+        for nuc in node.intervals:
+            samplestudied[node] = []
+
+            for anglestudied in node.intervals[nuc]:
+                lbound = node.__ORIGINAL_INTERVALS[nuc][anglestudied][0]
+                hbound = node.__ORIGINAL_INTERVALS[nuc][anglestudied][1]
+                assert lbound < hbound
+                ak = np.random.uniform(lbound, hbound)
+
+                samplestudied[node].append(ak)
+            # May be unusufull
+
+            # Pour se conformer à la fit fonction
+            samplestudied[node] = samplestudied[node] + \
+                node.__ORIGINAL_ROT_TABLE[nuc][4:]
+
+        # Here we have a possible rot_table
+
+        # Evaluation of the sample, SEE GENETIC ALGORITHM
+        value = fit(samplestudied)
+
+        if (min == -1) or value > node.getvalue():
+            node.value = value
+            min = value
+            # We modify the Rot_table right now
+            node.writeRot_table(samplestudied)
+            node.writeValeur(value)  # We write the new value
 
 
 # NON FAIT CREATE CHILD, EVALUATE
