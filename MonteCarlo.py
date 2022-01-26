@@ -1,27 +1,28 @@
 from Traj3D import *
 from random import *
 
+
 class node:  # Generic tree node
 
     #"Generic tree node."
     __ORIGINAL_ROT_TABLE = {
-    "AA": [35.62, 7.2, -154, ],
-    "AC": [34.4, 1.1,  143, ],
-    "AG": [27.7, 8.4,    2, ],
-    "AT": [31.5, 2.6,    0, ],
-    "CA": [34.5, 3.5,  -64, ],
-    "CC": [33.67, 2.1,  -57, ],
-    "CG": [29.8, 6.7,    0, ],
-    "CT": [27.7, 8.4,   -2, ],
-    "GA": [36.9, 5.3,  120, ],
-    "GC": [40, 5,  180, ],
-    "GG": [33.67, 2.1,   57, ],
-    "GT": [34.4, 1.1, -143, ],
-    "TA": [36, 0.9,    0, ],
-    "TC": [36.9, 5.3, -120, ],
-    "TG": [34.5, 3.5,   64, ],
-    "TT": [35.62, 7.2,  154, ]}  
-    
+        "AA": [35.62, 7.2, -154, ],
+        "AC": [34.4, 1.1,  143, ],
+        "AG": [27.7, 8.4,    2, ],
+        "AT": [31.5, 2.6,    0, ],
+        "CA": [34.5, 3.5,  -64, ],
+        "CC": [33.67, 2.1,  -57, ],
+        "CG": [29.8, 6.7,    0, ],
+        "CT": [27.7, 8.4,   -2, ],
+        "GA": [36.9, 5.3,  120, ],
+        "GC": [40, 5,  180, ],
+        "GG": [33.67, 2.1,   57, ],
+        "GT": [34.4, 1.1, -143, ],
+        "TA": [36, 0.9,    0, ],
+        "TC": [36.9, 5.3, -120, ],
+        "TG": [34.5, 3.5,   64, ],
+        "TT": [35.62, 7.2,  154, ]}
+
     # Exemple de représentation
     # """  Use a  tree to search in protein folding
     # We have 2 class: a tree and nodes
@@ -62,41 +63,46 @@ class node:  # Generic tree node
 
     def __init__(self):
 
-        self.__Rot_Table={} #to complete
+        self.__Rot_Table = {}  # to complete
 
-        
-        self.__valeur=0     #to complete
-        self.__n=0          
-        self.__N=0
-        self.__Childs=[]
+        self.__valeur = 0  # score of the function
+        self.__n = 0          # number of time we chose this node
+        self.__h = 0          # Height of the tree
+        self.__Childs = []
 
     def add_child(self, node):
         self.__Childs.append(node)
 
-    def writeRot_Table(self,dict):
-        #dict is the dictionary that will inserted in the Rot_Table of self
-        #has the shape {"AA": [154, 7, -154], "GC":[40, 5,  180, ]}
+    def writeRot_Table(self, dict):
+        # dict is the dictionary that will inserted in the Rot_Table of self
+        # has the shape {"AA": [154, 7, -154], "GC":[40, 5,  180, ]}
         for key in dict:
-            self.__Rot_Table[key]=dict[key]
+            self.__Rot_Table[key] = dict[key]
 
-    def writeValeur(self,idk): #don't know what to put here
+    def writeValeur(self, idk):  # don't know what to put here
         pass
-    
-    def calculateD(self,seq):
-        traj=Traj3D()
-        traj.compute(seq,self.__Rot_Table)        
-        xyz = np.array(traj.getTraj())  
-        x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
+
+    def calculateD(self, seq):  # Calculate Traj 3D
+        traj = Traj3D()
+        traj.compute(seq, self.__Rot_Table)
+        xyz = np.array(traj.getTraj())
+        x, y, z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
         return np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2)
 
-    def getvalue(self):
+    def getvalue(self):  # return the score of the function
         return self.__valeur
-    
-    def actualizeN(self):
+
+    def getn(self):
+        return n
+
+    def getchildren(self):
+        return self.__Childs
+
+    def actualizeh(self):  # actualize the height
         pass
 
 
-test= node()
+test = node()
 print(test.getvalue())
 
 # """
