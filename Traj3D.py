@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import collections  as mc
-
+import copy
 
 class Traj3D:
     """Represents a 3D trajectory"""
@@ -22,7 +22,6 @@ class Traj3D:
         return self.__Traj3D
 
     def compute(self, dna_seq, rot_table):
-
         # Matrice cumulant l'ensemble des transformations géométriques engendrées par la séquence d'ADN
         total_matrix = mathutils.Matrix()
 
@@ -63,5 +62,6 @@ class Traj3D:
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
         ax.plot(x,y,z)
+        ax.scatter(x[-1],y[-1],z[-1],marker="x",c="red")
         plt.show()
         plt.savefig(filename)
