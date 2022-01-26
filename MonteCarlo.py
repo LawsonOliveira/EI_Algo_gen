@@ -75,34 +75,15 @@ class node:  # Generic tree node
 
     # """
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     def __init__(self, table=__ORIGINAL_ROT_TABLE, interval=__ORIGINAL_INTERVALS):
-=======
-<<<<<<< HEAD
-    def __init__(self,table=__ORIGINAL_ROT_TABLE):
 
-        self.__Rot_Table = {}  # to complete
-        self.__Rot_Table=table #to complete
-=======
-    def __init__(self, table):
->>>>>>> b6fcc8efa887ba28b6b7b0854c0179fa4b02f7ec
-
-=======
-    def __init__(self, table):
-    
->>>>>>> 2d72f117e9761b9c43ea1aa6622632ac6340d0ab
         self.__Rot_Table = table  # to complete
 
         self.__valeur = 0  # score of the function
         self.__n = 0          # number of time we chose this node
         self.__h = 0          # Height of the tree
         self.__Childs = []
-<<<<<<< HEAD
-        self.__intervals = interval
-=======
         self.__intervals = node.__ORIGINAL_INTERVALS
->>>>>>> 2d72f117e9761b9c43ea1aa6622632ac6340d0ab
 
     def add_child(self, node):
         self.__Childs.append(node)
