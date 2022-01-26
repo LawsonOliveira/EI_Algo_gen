@@ -46,13 +46,13 @@ class Chromosome():
 
     @classmethod
     def Crossover(cls, chromosome1, chromosome2, fct_crossover):
-        assert chromosome1.nb_genes() == chromosome2.nb_genes()
+        assert chromosome1.nbr_genes() == chromosome2.nbr_genes()
         #we initialize chr_os1 and chr_os2: chromosome offsprings
         chr_os1 = Chromosome([], [])
         chr_os2 = Chromosome([], [])
         #crossover for each gene
         for i in range(chromosome1.nbr_genes()):
-            g1, g2 = Gene.Croisement(
+            g1, g2 = Gene.Crossover(
                 chromosome1[i], chromosome2[i], fct_crossover)
 
             if chromosome1.mutation_genes != [] and chromosome2.mutation_genes != [] and len(chromosome1.genes_mutation) == len(chromosome2.genes_mutation):
@@ -92,18 +92,17 @@ class Individual():
             chromosome.Mutation(moy)
 
     @classmethod
-    def Crossover(cls, individu_1, individu_2, fct_crossover):
+    def Crossover(cls, individual_1, individual_2, fct_crossover):
         #Initializing offspring individuals
         indiv_os1 = Individual([])
         indiv_os2 = Individual([])
 
         #Crossover for each chromosome
         for i in range(individual_1.nbr_chr):
-            chr1, chr2 = Chromosome.Croisement(
-                individual_1[i], individual_2[i], fct_crossover)
+            chr1, chr2 = Chromosome.Crossover(individual_1[i], individual_2[i], fct_crossover)
         
-            indiv_os1.add_chromosome(c1)
-            indiv_os2.add_chromosome(c2)
+            indiv_os1.add_chromosome(chr1)
+            indiv_os2.add_chromosome(chr2)
 
         return (indiv_os1, indiv_os2)
 
@@ -125,7 +124,7 @@ class population():
         self.size_best = round(len(individuals)*rate)
 
     def add_indiv(self, indiv):
-        self.individus.append(indiv)
+        self.individuals.append(indiv)
     
     def size(self):
         return len(self.individuals)
@@ -150,53 +149,4 @@ class population():
 
 
 
-class GA:
-    """
-    Classe permettant d'éxécuter un algorithme génétique sur un problème d'optimisation.
-    """
-
-    def __init__(self, pop_cap, nb_var, fitness_fnct):
-        """
-        Sauvegarde les hyper-paramètres de l'algorithme, et crée la population initiale.
-
-        Paramètres :
-        - pop_cap (int) : Nombre d'individus de la population
-        - nb_var (int) : Taille du génome des individus
-        - fitness_fnct (function) : Fonction objective à minimiser
-        """
-        # Sauvegarde des hyper-paramètres
-        self.pop_cap = pop_cap
-        self.nb_var = nb_var
-        self.fitness_fnct = fitness_fnct
-
-    def ini_pop(self):
-        pass
-
-    def selection(self, ind1, ind2):
-        pass
-
-    def mutation(self, ind, mut_rate,
-                 bound_inf=None, bound_sup=None):
-
-        return ind
-
-    def evaluation(self):
-        """ évalue le génome actuelle"""
-
-    def do_gen(self):
-        """
-        Calcule la génération N+1 à partir de la génération N.
-        """
-        pass
-
-    def evaluerGA():
-        pop = initialisation_population()
-        while critere:  # Critere has to be defined
-            va = pop.evaluation()
-
-            pop1 = pop.selection(pop, va)
-            pop1 = pop.mutation()
-            pop = pop1
-
-        return pop
 
