@@ -1,7 +1,7 @@
 from os import popen
 from re import A
 from random import *
-
+git 
 
 class Gene():
     def __init__(self, bit, size):
