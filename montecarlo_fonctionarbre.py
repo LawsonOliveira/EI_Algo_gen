@@ -1,3 +1,4 @@
+# CARE WE ARE MAYBE NOT WORKING WITH ROT TABLE
 import numpy as np
 from math import sqrt
 from RotTable import RotTable
@@ -29,7 +30,9 @@ Tree can chose his successor+ """
 # Hyperparameter
 
 seq = "AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGTTGGGGACTGCTTAACCGGGTAACTGGCTTGGTGGAGCACAGATACCAAATACTGTCCTTCTAGTGTAGCCGCAGTTAGGCCACCACTTCAAGAACTCTTAATATCTCAATCCACCTTGTCCAGTTACCAGTGGCTGCTGCCAGTGGCGCTTTGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAGCCGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTATGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAACGGCGCAGCCTTTTCCTGGTTCTCGTTTTTTGCTCACATGTTTCTTTTGGCGTTATCCCCTGATTCTGTGGATAACCGCATCTCCGCTTTTGAGTGAGCAGACACCGCTCGCCGCAGCCGAACGACCGAGTGTAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCGGAACGTGCATTTTCTCCTTACGCATCTGTGCGGCATTTCACATCGGACATGGTGCGCTTTCCATACAATTCGTACTGATGCCGCATAGTTAAGCCAGTATACACTCCGCTATCGCTACGTGACTGGTTCAGGGCTTCGCCCCGAAACCCCCTGACGCGCCCTGAGGGGCTTGTCTGCTCCCGGCATCCGCTCACAGACAAGCTGTTACCGTCTCCGGGAGCTGTATGTGTCAGAGGTTTTCACCGTCATCCCCGAAGCGTGCGA"
-
+nbsamplesmallh = 100  # Parameter for sample for the first depth
+nbsamplehugeh = 50  # first parameter for the sample for huge depth
+barrier = 16  # How much we have huge or bad sample
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
 
@@ -64,6 +67,16 @@ def selection(node, K=1):
     return childchoisi
 
 
+def sampleininterval(sample, interval):  # Check if a sample is in the interval or not
+    marq = True
+    for nuc in sample:
+        for value in range(3):
+            if interval[nuc][value][0] > sample[nuc][value] or interval[nuc][value][1] < sample[nuc][value]:
+                return False
+
+    return True
+
+
 # m mean how we gonna split the interval in many parts, we create here m Child
 def createchild(node1, m=10):
     #  On créer m enfants
@@ -82,18 +95,35 @@ def createchild(node1, m=10):
     anglestudied = hnew % 3
     b = node1.getinterval()[nuc][anglestudied][1]
     a = node1.getinterval()[nuc][anglestudied][0]
+    marqueur = True  # Marqueur checks  if sample is in the interval on not
     for i in range(m):
         n_nodes = node()
         n_nodes.actualizeh(h)
         # we copy the dictionnary we are looking at , # The best would be to have a list, and we do it directy on the dictionnary ...
         n_nodes.actualiseinterval(
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
-        evaluate(n_nodes)
 
-        node1.add_child(n_nodes)
+        if h < barrier:
+            evaluate(n_nodes, nbsamplesmallh)
+        if h > barrier:  # We modify, cuz the first one are pretty important
+
+            evaluate(n_nodes, nbsamplehugeh)
+        # To prevent, if the sample we got before are as good as before
+
+        rottable = node1.getTable()
+
+        interval = n_nodes.getinterval()
+        if marqueur and sampleininterval(rottable, interval):
+            marqueur = False  # We don't need to search any further
+            value = node1.getvalue()
+            if value > n_nodes.getvalue():
+                n_nodes.writeValeur(value)
+                n_nodes.writeRot_Table(rottable)
+        # End of prevent,
+        node1.add_child(n_nodes)  # We add finally the children
 
 
-def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
+def evaluate(node, nbsample=30):  # evaluate a node, by taking a lot of children
 
     # Nb of sample we get
     min = (-1)
@@ -142,7 +172,7 @@ def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
 def expansion(node):
     # here node doesn't have child
     assert node.getchild() == [], 'No a feather'
-    print(node)
+    # print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
     N = 10  # Number of child we create
     valevaluate = []  # list of score of each son
@@ -166,10 +196,10 @@ def expansion(node):
 
 
 def backpropagation(node):  # Algorithme  finale de backpropagation
-    securityrope = []  # To hinder recursivity
     visiter = node
+    securityrope = [visiter]  # To hinder recursivity
+
     childvisiter = visiter.getchild()
-    securityrope.append(visiter)
     while childvisiter != []:
         # It has children
 
@@ -194,7 +224,7 @@ def compute(root, nbit, critere=10**-3):
     """NBIT: NOMBRE ITERATION max 
     CRITERE POUR SAVOIR SI ON EST PROCHE DE LA DISTANCE OU NON """
 
-    value = root.getvalue()  # Value of the first root, MUST NOT BE 0 WATCH OUT
+    value = critere+1  # Value of the first root, MUST NOT BE 0 WATCH OUT
     nbiteration = 0
     print("initialisation", value)
     print()
@@ -215,7 +245,7 @@ def compute(root, nbit, critere=10**-3):
 
         # CARE MIN OR MAX , evaluer fonction non fait
         # EVALUATION FONCTION PAS FAIT
-        dive = max(dive.__childs, key=evaluerfonction)
+        dive = max(dive.getchild(), key=evaluerfonction)
 
     return dive.getTable()  # Return the best sample we ever had
 
@@ -225,7 +255,7 @@ def compute(root, nbit, critere=10**-3):
 
 def main():
     noeud = node()
-    nbit = 100  # HYPERPARAMETRE
+    nbit = 10  # HYPERPARAMETRE
     best = compute(noeud, nbit)
     #print(noeud.getvalue(), "his value")
     print(noeud.getvalue(), "la value")
@@ -233,7 +263,13 @@ def main():
     traj = Traj3D
 
     traj = Traj3D
+    print(best)  # BEST IS AN ARRAY
+    a = Rot_Table()
+    a.newTable(best)
     traj.compute(seq, best)
+
+    traj.compute()
+    # traj.compute(traj,seq,best)
     traj.draw("MONRESULTAT.png")
     print("pitié ça marche")
 
