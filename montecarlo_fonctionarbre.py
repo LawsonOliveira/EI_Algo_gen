@@ -3,6 +3,8 @@ from math import sqrt
 
 from numpy import angle
 from MonteCarlo import *
+from RotTable import RotTable
+from Traj3D import *
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
     "AC": [34.4, 1.1,  143, ],
@@ -29,6 +31,15 @@ Tree can chose his successor+ """
 
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
+
+def fit(dict, seq):
+    a=RotTable()
+    a.writeTable(dict)
+    traj=Traj3D()
+    traj.compute(seq,a)
+    xyz = np.array(traj.getTraj()) 
+    x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
+    return np.sqrt(x[-1]**2 + y[-1]**2 + z[-1]**2)
 
 def selection(node, K=1):
     childlist = node.getchildren()  # list of children
