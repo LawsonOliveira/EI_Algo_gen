@@ -1,10 +1,9 @@
 from Traj3D import *
 from random import *
 import numpy as np
-#uniform(-.5, .5)
 
 
-def copy(dict):
+def copy(dict):  # copie profonde de dictionnaire
     res = {}
     for cle in dict:
         res1 = []
@@ -47,53 +46,18 @@ class node:  # Generic tree node
             [__ORIGINAL_ROT_TABLE[key][2]-np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5],
              __ORIGINAL_ROT_TABLE[key][2]+np.sqrt(3)*__ORIGINAL_ROT_TABLE[key][5]]
         ]
-    # Exemple de représentation
-    # """  Use a  tree to search in protein folding
-    # We have 2 class: a tree and nodes
-    # Rn: a node have a value, a successor function
-    # Tree can chose his successor+ """
-    # Some question: How to store the nodes values?
-
-    # Store data with a dictionnary of admissible interval
-
-    # """
-    # class nodes(tree):
-    #     # Set of data
-    #     value = 0
-
-    #     def init__(T):  # T is the ???  which represent all the possible interval
-    #         nodes.rep = T  # all possible interval
-    #         nodes.value = 0
-    #         super().fit_node(self)
-
-    #     def successor(self):
-    #         # Renvoie la liste des successeurs
-    #         res = []  # list of succesor
-    #         for nuc in self.rep:
-
-    #             for k in range(len(self.rep(nuc))):
-    #                 nextrep1 = getrep(self).copy()
-    #                 nextrep2 = getrep(self).copy()
-
-    #                 [a, b] = nextrep1[nuc][k]
-    #                 nextrep1[nuc][k] = [a, (a+b)/2]
-    #                 nextrep2[nuc][k] = [(a+b)/2, b]
-    #         return res  # Non optimal: It creates way too much dictionnary
-
-    #     def getrep(self):  # Renvoie le tableau de représentant associé
-    #         return self.rep
-
-    # """
 
     def __init__(self, table=__ORIGINAL_ROT_TABLE, interval=__ORIGINAL_INTERVALS):
 
-        self.__Rot_Table = copy(table)  # to complete
+        self.__Rot_Table = copy(table)
 
         self.__valeur = 0  # score of the function
         self.__n = 1          # number of time we chose this node
         self.__h = 0          # Height of the tree
         self.__Childs = []
         self.__intervals = copy(node.__ORIGINAL_INTERVALS)
+
+    """Ici, série de fonction qui revient surtout à récuperer chaque paramètre et a les modifier"""
 
     def add_child(self, node):
         self.__Childs.append(node)
@@ -150,17 +114,6 @@ class node:  # Generic tree node
 
     def getchild(self):
         return self.__Childs
-    
-    def writen(self,n):
-        self.__n=n
 
-
-# """
-#    def fit_node(self):
-#         return
-#         # Fit a node
-#     def chosenode(self):
-#         pass  # Chose a node between all nodes possibles
-#     #  On a 4 étapes selection , expansion, simulaton, backpropagation
-# # Pour le tirage il faudrait prendre n valeurs au hasard  dans les intervalles et ensuite backpropager
-# # Pour """
+    def writen(self, n):
+        self.__n = n
