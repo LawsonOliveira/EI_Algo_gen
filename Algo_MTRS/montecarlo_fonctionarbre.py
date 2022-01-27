@@ -1,11 +1,10 @@
 # CARE WE ARE MAYBE NOT WORKING WITH ROT TABLE
 import numpy as np
 from math import sqrt
-from RotTable import RotTable
+from RotTable import *
 from numpy import angle
 # from EI_Algo_gen.RotTable import RotTable
-from MonteCarlo import *
-import time
+from Algo_MTRS.MonteCarlo import *
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
     "AC": [34.4, 1.1,  143, ],
@@ -29,17 +28,14 @@ We have 2 class: a tree and nodes
 Rn: a node have a value, a successor function
 Tree can chose his successor+ """
 # Hyperparameter
-filename='plasmid_8k.fasta'
-lineList = [line.rstrip('\n') for line in open(filename)]
-seq = ''.join(lineList[1:])
-nbsamplesmallh = 10  # Parameter for sample for the first depth
-nbsamplehugeh = 4  # first parameter for the sample for huge depth
+
+nbsamplesmallh = 1  # Parameter for sample for the first depth
+nbsamplehugeh = 1  # first parameter for the sample for huge depth
 barrier = 32  # How much we have huge or bad sample
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 critere=10**-3
-nbit = 200
 
-def fit(dict, seq=seq):
+def fit(dict, seq):
     a = RotTable()
     a.newTable(dict)
 
@@ -81,7 +77,7 @@ def sampleininterval(sample, interval):  # Check if a sample is in the interval 
 
 
 # m mean how we gonna split the interval in many parts, we create here m Child
-def createchild(node1, m=2):
+def createchild(node1, seq,m=2):
     #  On créer m enfants
     nbnucleotide = 16  # nb of nucleotide
     nbangle = 2
@@ -105,10 +101,10 @@ def createchild(node1, m=2):
             nuc, anglestudied, [a + (b-a)*i/m, a + (b-a)*(i+1)/m])
 
         if h < barrier:
-            evaluate(n_nodes, nbsamplesmallh)
+            evaluate(n_nodes, seq,nbsamplesmallh)
         if h >= barrier:  # We modify, cuz the first one are pretty important
 
-            evaluate(n_nodes, nbsamplehugeh)
+            evaluate(n_nodes, seq,nbsamplehugeh)
         # To prevent, if the sample we got before are as good as before
 
         rottable = node1.getTable()
@@ -124,7 +120,7 @@ def createchild(node1, m=2):
         node1.add_child(n_nodes)  # We add finally the children
 
 
-def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
+def evaluate(node, seq,nbsample=10):  # evaluate a node, by taking a lot of children
 
     # Nb of sample we get
     min = (-1)
@@ -155,8 +151,7 @@ def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
             # May be unusufull
 
             # Pour se conformer à la fit fonction
-            samplestudied[nuc] = samplestudied[nuc] + \
-                Rot_Table[nuc][4:]
+            samplestudied[nuc] = samplestudied[nuc] 
 
         # Evaluation of the sample, SEE GENETIC ALGORITHM
         #print("samplestudied", samplestudied)
@@ -170,17 +165,17 @@ def evaluate(node, nbsample=10):  # evaluate a node, by taking a lot of children
 
 
 # NON FAIT CREATE CHILD, EVALUATE
-def expansion(node):
+def expansion(node,seq):
     # here node doesn't have child
     assert node.getchild() == [], 'No a feather'
     # print(node)
     # Pour l'expansion , on ouvre k enfants , on les évalues, on récupère le maximum et le renvoie pour mettre à jour les enfants
-    N = 10  # Number of child we create
+    N = 2  # Number of child we create
     valevaluate = []  # list of score of each son
     h = node.geth()
 
     # We create a child , IT DEPENDS WHAT WE DO HERE
-    createchild(node, N)  # Create child creates N child to the "node" node
+    createchild(node,seq,N)  # Create child creates N child to the "node" node
 
     childlist = node.getchild()
     for child in childlist:
@@ -190,14 +185,13 @@ def expansion(node):
 
     m = max(valevaluate)
     u = node.getvalue()
-    print("m",m,"u",u)
     if u == 0 or m > u:
 
         node.writeValeur(m)   # We modify the value of the node
     return max(u, m)  # We return the value of the node
 
 
-def backpropagation(node):  # Algorithme  finale de backpropagation
+def backpropagation(node,seq):  # Algorithme  finale de backpropagation
     visiter = node
     securityrope = [visiter]  # To hinder recursivity
 
@@ -211,7 +205,7 @@ def backpropagation(node):  # Algorithme  finale de backpropagation
         childvisiter = nvavister.getchild()
         securityrope.append(visiter)
     term = securityrope[-1]  # The last one is a feather
-    value = expansion(term)  # EXPANSIONNNN
+    value = expansion(term,seq)  # EXPANSIONNNN
     # Time to BACKPEDAL
     print("vqlue",value )
     for node1 in securityrope:
@@ -222,12 +216,9 @@ def backpropagation(node):  # Algorithme  finale de backpropagation
     return  # We return nothing, we don't care about it
 
 
-def compute(root, nbit, critere=10**(-3)):
-    time1=[]
-    values=[]
-    iterations=[]
-    t_start=time.time()
+def compute(nbit,seq, critere=10**(-3)):
     # Root: C.I
+    root=node()
     """NBIT: NOMBRE ITERATION max 
     CRITERE POUR SAVOIR SI ON EST PROCHE DE LA DISTANCE OU NON """
     root.writeValeur(-np.inf)
@@ -236,19 +227,12 @@ def compute(root, nbit, critere=10**(-3)):
     print("initialisation", value)
     print()
     while nbiteration < nbit and abs(value) > critere:
-        backpropagation(root)  # We backpropagation like always
-        
-        
-        print(" nbiteration", nbiteration)
-        print("value", value)
+        backpropagation(root,seq)  # We backpropagation like always
+        print(" Iteration:", nbiteration)
+        print("Distance", -value)
         
         nbiteration += 1
         value = root.getvalue()
-
-        values.append(value)
-        time1.append(time.time()-t_start)
-        iterations.append(nbiteration)
-    
 
     # on a donc le graphe final
 
@@ -268,49 +252,18 @@ def compute(root, nbit, critere=10**(-3)):
             # Here we have the child with the best value
             a = nodee
         return a.getTable()
-    fig, ax = plt.subplots()
-    ax.plot(iterations,time1)
-
-    ax.set(xlabel='iteration', ylabel='time (s)',title='time vs number of iterations')
     
-
-    fig.savefig("time vs number of iterations sh=10 bh=4 nchild=2 8k")
-    plt.show()
-
-    fig, ax = plt.subplots()
-    ax.plot(iterations, values)
-
-    ax.set(xlabel='iteration', ylabel='value',title='value vs number of iteration')
-    
-
-    fig.savefig("value vs iteration sh=10 bh=4 nchild=2 8k")
     dive = root
-    print(" le plus dur est passée, on récupère le mnimum ")
-    return recupsol(dive)  # Return the best sample we ever had
-
-
-# APPEND  copie superficielle
-
-
-def main(nbit=50):
-    noeud = node()
-     # HYPERPARAMETRE
-    best = compute(noeud, nbit)
-    #print(noeud.getvalue(), "his value")
-    print(noeud.getvalue(), "la value")
-    print(noeud.getchild(), "les momes")
-
-    traj = Traj3D()
-    print(best)  # BEST IS AN ARRAY
-    a = RotTable()
+    best=recupsol(dive)  # Return the best sample we ever had
+    a=RotTable()
+    traj=Traj3D()
     a.newTable(best)
-    traj.compute(seq, a)
-    # traj.compute(traj,seq,best)
-    traj.draw("MONRESULTAT.png")
-    print("pitié ça marche")
+    traj.compute(seq,a)
+    traj.draw("filename")
 
-if __name__ == "__main__":
 
-    a = node()
-    Rot_Table = a.getoriginalrotable()  # TAKE THIS AS GLOBAL VARIABLE
-    main(nbit)
+
+
+
+
+
