@@ -1,4 +1,10 @@
-from Chromosome import *
+import sys  
+from pathlib import Path  
+file = Path(__file__).resolve()  
+package_root_directory = file.parents[1]  
+sys.path.append(str(package_root_directory))
+
+from Algo_gen.Chromosome import *
 import numpy as np
 from Traj3D import *
 import random
@@ -54,29 +60,37 @@ class Population:
         return self.__pop[i],self.__distance[i]
     
     def mutation(self,taux=0.05):
+        # Makes the mutation in the population
         numb_of_dinucleotides=self.__distanceinucle_size 
-        n_mutates=int(self.__pop_size*numb_of_dinucleotides*taux)
+        n_mutates=int(self.__pop_size*numb_of_dinucleotides*taux)       # This is the total number of mutations there will be
         for i in range(n_mutates):
             individu=random.randint(0,len(self.__pop)-1)
             self.__pop[individu].apply_mutation()
 
     def new_pop(self,new_pop):
+        # Update the population
         self.__pop=new_pop
 
     def add_individual(self, individual,i):
+        # Adds a new element to the population at position i
         self.__pop[i]=individual
     
     def get_size(self):
+        # Return the population size
         return self.__pop_size
 
     def get_indiv(self, i):
+        # Return the individual in the position i of the population
         return self.__pop[i]
 
     def get_pop(self):
+        # Return the population
         return self.__pop
     
-    def get_D(self):
+    def get_distance(self):
+        # Return the distance between the first gene and last gene of each chromosome
         return self.__distance
 
     def get_bests(self):
+        # Return the bests individuals of the population
         return self.__bests

@@ -1,7 +1,15 @@
+import sys  
+from pathlib import Path  
+file = Path(__file__).resolve()  
+package_root_directory = file.parents[1]  
+sys.path.append(str(package_root_directory))
+
 import numpy as np
 import random
 
+# This class represents each chromosome
 class Chromosome:
+    # Original rotation table
     __ORIGINAL_ROT_TABLE = {
         "AA": [35.62, 7.2, -154,      0.06,  0.6, 0],
         "AC": [34.4, 1.1,  143,      1.3,  5, 0],
@@ -21,53 +29,64 @@ class Chromosome:
         "TT": [35.62, 7.2,  154,      0.06,  0.6, 0]
     }
 
-    def __init__(self,genes=None):
-        if genes==None:
-            self.__genes = {}
+    def __init__(self,chr=None):
+        # Chr is a collection of gene of a chromosome
+        if chr==None:
+            self.__chr = {}
             for dinucleotide in self.__ORIGINAL_ROT_TABLE:
-                #iniciate the values randomly
-                self.__genes[dinucleotide] = [np.random.normal(self.__ORIGINAL_ROT_TABLE[dinucleotide][0],self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(self.__ORIGINAL_ROT_TABLE[dinucleotide][1],self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),self.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
-                #self.__genes[dinucleotide] = [np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][0]-self.__ORIGINAL_ROT_TABLE[dinucleotide][3],self.__ORIGINAL_ROT_TABLE[dinucleotide][0]+self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][1]-self.__ORIGINAL_ROT_TABLE[dinucleotide][4],self.__ORIGINAL_ROT_TABLE[dinucleotide][1]+self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][2]-self.__ORIGINAL_ROT_TABLE[dinucleotide][5],self.__ORIGINAL_ROT_TABLE[dinucleotide][2]+self.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
+                # Iniciate the values randomly with a uniform distribution 
+                #self.__chr[dinucleotide] = [np.random.normal(self.__ORIGINAL_ROT_TABLE[dinucleotide][0],self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(self.__ORIGINAL_ROT_TABLE[dinucleotide][1],self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),self.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
+                self.__chr[dinucleotide] = [np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][0]-self.__ORIGINAL_ROT_TABLE[dinucleotide][3],self.__ORIGINAL_ROT_TABLE[dinucleotide][0]+self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][1]-self.__ORIGINAL_ROT_TABLE[dinucleotide][4],self.__ORIGINAL_ROT_TABLE[dinucleotide][1]+self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][2]-self.__ORIGINAL_ROT_TABLE[dinucleotide][5],self.__ORIGINAL_ROT_TABLE[dinucleotide][2]+self.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
         else:
-            self.__genes=genes
+            # Creates a new chromosome with the given chr
+            self.__chr=chr
         self.__nucleotidlist=["AA","AC","AG","AT","CA","CC","CG","CT","GA","GC","GG","GT","TA","TC","TG","TT"]
-        self.__nb_genes = len(self.__ORIGINAL_ROT_TABLE)
     
-    def __str__(self):
-        return str(self.__genes)
+    def __str__(self): 
+        # Sends a chromosome string
+        return str(self.__chr)
 
     def crossover(self,chromosome1, chromosome2):
-        #we initialize chr_os1 and chr_os2: chromosome offsprings
+        # We use couple chromosome1 and chromosome2 to create two children (news chromosomes)
         enfant1={}
         enfant2={}
         for dinucleotide in self.__nucleotidlist:
+            # Each gene of each child is chosen randomly between the gene of the chromosome1 and the gene of the chromosome2
             enfant1[dinucleotide]=random.choice([chromosome1.get_gene(dinucleotide),chromosome2.get_gene(dinucleotide)])
             enfant2[dinucleotide]=random.choice([chromosome1.get_gene(dinucleotide),chromosome2.get_gene(dinucleotide)])
         return enfant1,enfant2
 
     def apply_mutation(self):
+        # Mutates the value of self.__chr with a uniform distribution 
         dinucleotide=random.randint(0,len(self.__nucleotidlist)-1)
         dinucleotide=self.__nucleotidlist[dinucleotide]
-        self.__genes[dinucleotide] = [np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][0]-self.__ORIGINAL_ROT_TABLE[dinucleotide][3],self.__ORIGINAL_ROT_TABLE[dinucleotide][0]+self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][1]-self.__ORIGINAL_ROT_TABLE[dinucleotide][4],self.__ORIGINAL_ROT_TABLE[dinucleotide][1]+self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][2]-self.__ORIGINAL_ROT_TABLE[dinucleotide][5],self.__ORIGINAL_ROT_TABLE[dinucleotide][2]+self.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
+        self.__chr[dinucleotide] = [np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][0]-self.__ORIGINAL_ROT_TABLE[dinucleotide][3],self.__ORIGINAL_ROT_TABLE[dinucleotide][0]+self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][1]-self.__ORIGINAL_ROT_TABLE[dinucleotide][4],self.__ORIGINAL_ROT_TABLE[dinucleotide][1]+self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][2]-self.__ORIGINAL_ROT_TABLE[dinucleotide][5],self.__ORIGINAL_ROT_TABLE[dinucleotide][2]+self.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
 
-    def upd_chr(self,genes):
-        self.__genes = genes    
+    def upd_chr(self,chr):
+        # Updates the chromosome
+        self.__chr = chr    
     
     def get_size(self):
-        return len(self.__genes)
+        # Return the size of the chromosome
+        return len(self.__chr)
     
     def get_chr(self):
-        return self.__genes
+        # Return the chromosome
+        return self.__chr
     
     def get_gene(self, dinucleotide):
-        return self.__genes[dinucleotide]
+        # Return the gene in the dinucleotide position of the chromosome
+        return self.__chr[dinucleotide]
 
     def getTwist(self, dinucleotide):
-        return self.__genes[dinucleotide][0]
+        # Return the twist of the dinucleotide in the chromosome
+        return self.__chr[dinucleotide][0]
 
     def getWedge(self, dinucleotide):
-        return self.__genes[dinucleotide][1]
+        # Return the wedge of the dinucleotide in the chromosome
+        return self.__chr[dinucleotide][1]
 
     def getDirection(self, dinucleotide):
-        return self.__genes[dinucleotide][2]
+        # Return the direction of the dinucleotide in the chromosome
+        return self.__chr[dinucleotide][2]
 
