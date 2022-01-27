@@ -36,7 +36,7 @@ barrier = 16  # How much we have huge or bad sample
 # Three Main part of Monte Carlo : selection, expansion, backpropagation
 
 
-def fit(dict, seq):
+def fit(dict, seq=seq):
     a = RotTable()
     a.newTable(dict)
 
@@ -245,7 +245,8 @@ def compute(root, nbit, critere=10**-3):
 
         # CARE MIN OR MAX , evaluer fonction non fait
         # EVALUATION FONCTION PAS FAIT
-        dive = max(dive.getchild(), key=evaluerfonction)
+        # HERE IT IS FALSE , YOU HAVE TO DO IT BY YOURSELF: FIND THE NEW ONE WITH HIS VALUE
+        dive = max(dive.getchild(), key=fit())
 
     return dive.getTable()  # Return the best sample we ever had
 
