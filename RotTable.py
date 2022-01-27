@@ -4,6 +4,11 @@ import numpy as np
 
 
 
+
+
+
+
+
 class RotTable:
     """Represents the rotation table"""
 
@@ -52,20 +57,11 @@ class RotTable:
     def getTwist(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][0]
 
-    def getSRTwist(self,dinucleotide):
-        return self.__Rot_Table[dinucleotide][3]
-
     def getWedge(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][1]
 
-    def getSRWedge(self,dinucleotide):
-        return self.__Rot_Table[dinucleotide][4]
-
     def getDirection(self, dinucleotide):
         return self.__Rot_Table[dinucleotide][2]
-
-    def getSRDirection(self,dinucleotide):
-        return self.__Rot_Table[dinucleotide][5]
 
     def getTable(self):
         return self.__Rot_Table
