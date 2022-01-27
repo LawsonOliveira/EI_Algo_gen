@@ -6,6 +6,8 @@ from numpy import angle
 # from EI_Algo_gen.RotTable import RotTable
 from MonteCarlo import *
 import time
+
+"""CORPS DE CODE DE MCTS. LES FONCTIONS DE SELECTION,EVALUATION,BACKPROPAGATION,EXPANSION SONT ECRIT ICI. DE PLUS ON A AUSSI UNE CLASSE MCTS DE SYNTHESE"""
 __ORIGINAL_ROT_TABLE = {
     "AA": [35.62, 7.2, -154, ],
     "AC": [34.4, 1.1,  143, ],

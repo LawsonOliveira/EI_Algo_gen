@@ -1,6 +1,7 @@
 from Traj3D import *
 from random import *
 import numpy as np
+"""Classes essentielle de noeud pour l'algorithme de MCTS. On ne définit ici que des classes """
 
 
 def copy(dict):  # copie profonde de dictionnaire
