@@ -1,7 +1,7 @@
 from os import popen
 from re import A
 from random import *
-git 
+ 
 
 class Gene():
     def __init__(self, bit, size):
@@ -46,7 +46,7 @@ class Chromosome():
 
     @classmethod
     def Crossover(cls, chromosome1, chromosome2, fct_crossover):
-        assert chromosome1.nb_genes() == chromosome2.nb_genes()
+        assert chromosome1.nbr_genes() == chromosome2.nbr_genes()
         #we initialize chr_os1 and chr_os2: chromosome offsprings
         chr_os1 = Chromosome([], [])
         chr_os2 = Chromosome([], [])
@@ -92,18 +92,18 @@ class Individual():
             chromosome.Mutation(moy)
 
     @classmethod
-    def Crossover(cls, individu_1, individu_2, fct_crossover):
+    def Crossover(cls, individual_1, individual_2, fct_crossover):
         #Initializing offspring individuals
         indiv_os1 = Individual([])
         indiv_os2 = Individual([])
 
         #Crossover for each chromosome
         for i in range(individual_1.nbr_chr):
-            chr1, chr2 = Chromosome.Croisement(
+            chr1, chr2 = Chromosome.Crossover(
                 individual_1[i], individual_2[i], fct_crossover)
         
-            indiv_os1.add_chromosome(c1)
-            indiv_os2.add_chromosome(c2)
+            indiv_os1.add_chromosome(chr1)
+            indiv_os2.add_chromosome(chr2)
 
         return (indiv_os1, indiv_os2)
 
@@ -118,11 +118,7 @@ class population():
         #self.mutation = mutation
         #self.fit = fit
 
-    def __init__(self, individuals=[], rate=0.05):
-        self.individuals = individuals
-        self.taille = len(individuals)
-        self.initial_size = len(individuals)
-        self.size_best = round(len(individuals)*rate)
+
 
     def add_indiv(self, indiv):
         self.individus.append(indiv)
