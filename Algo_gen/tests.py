@@ -4,9 +4,10 @@ from Population import *
 
 def test_get_pop():
     population=Population(20)
-    print(population.get_pop())
-
-def test_get_D():
+    li = population.get_pop()
+    assert len(li) == 20
+    assert type(li[0].upd_chr) == dict
+"""def test_get_D():
     population=Population(20)
     print(population.get_D())
 
@@ -54,6 +55,6 @@ def test_mutation():
     population.fitness(seq)
     population.select_bests()
     population.do_gen()
-    aux=Chrmosome()
+    aux=Chromosome()
     aux.mutation()
-    print(population.get_pop())
+    print(population.get_pop())"""
