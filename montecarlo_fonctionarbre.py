@@ -260,15 +260,13 @@ def main():
     #print(noeud.getvalue(), "his value")
     print(noeud.getvalue(), "la value")
     print(noeud.getchild(), "les momes")
-    traj = Traj3D
 
-    traj = Traj3D
+    traj = Traj3D()
     print(best)  # BEST IS AN ARRAY
     a = Rot_Table()
     a.newTable(best)
-    traj.compute(seq, best)
+    traj.compute(seq, a)
 
-    traj.compute()
     # traj.compute(traj,seq,best)
     traj.draw("MONRESULTAT.png")
     print("pitié ça marche")
