@@ -238,17 +238,24 @@ def compute(root, nbit, critere=10**-3):
     # on a donc le graphe final
 
     #  On récupère la solution
+    def recupsol(node):
+        a = node
+        while a.getchild() != []:
+            childliste = a.getchild()
+            nodee = a
+            max = -1
+            for child in childliste:
+                if max == -1 or child.getvalue() > max:
+                    max = child.getvalue()
+                    nodee = child
+
+            # Here we have the child with the best value
+            a = nodee
+        return a.getTable()
 
     dive = root
     print(" le plus dur est passée, on récupère le mnimum ")
-    while dive.getchild() != []:
-
-        # CARE MIN OR MAX , evaluer fonction non fait
-        # EVALUATION FONCTION PAS FAIT
-        # HERE IT IS FALSE , YOU HAVE TO DO IT BY YOURSELF: FIND THE NEW ONE WITH HIS VALUE
-        dive = max(dive.getchild(), key=fit())
-
-    return dive.getTable()  # Return the best sample we ever had
+    return recupsol(dive)  # Return the best sample we ever had
 
 
 # APPEND  copie superficielle
