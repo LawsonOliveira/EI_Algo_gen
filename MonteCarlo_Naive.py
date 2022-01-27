@@ -1,10 +1,15 @@
 from MonteCarlo import *
-#start
+import numpy as np
+from math import sqrt
+from RotTable import RotTable
+from numpy import angle
+# from EI_Algo_gen.RotTable import RotTable
+import time
 root=node(node.__ORIGINAL_ROT_TABLE)
 
-def gen(n,seq):
-    nodes=[node(n.getTable) for i in range(n)]
-    
+filename='plasmid_8k.fasta'
+lineList = [line.rstrip('\n') for line in open(filename)]
+seq = ''.join(lineList[1:])
 
+def createrandomtable():
 
-    return node

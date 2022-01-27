@@ -87,7 +87,7 @@ class node:  # Generic tree node
 
     def __init__(self, table=__ORIGINAL_ROT_TABLE, interval=__ORIGINAL_INTERVALS):
 
-        self.__Rot_Table = table  # to complete
+        self.__Rot_Table = copy(table)  # to complete
 
         self.__valeur = 0  # score of the function
         self.__n = 1          # number of time we chose this node
