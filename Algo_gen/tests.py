@@ -1,22 +1,36 @@
 from Chromosome import *
 from GA import *
 from Population import *
+import numpy
+
+population=Population(20)
+print(population.get_pop())
+seq="AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGTTGGGGACTGCTTAACCGGGTAACTGGCTTGGTGGAGCACAGATACCAAATACTGTCCTTCTAGTGTAGCCGCAGTTAGGCCACCACTTCAAGAACTCTTAATATCTCAATCCACCTTGTCCAGTTACCAGTGGCTGCTGCCAGTGGCGCTTTGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAGCCGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTATGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAACGGCGCAGCCTTTTCCTGGTTCTCGTTTTTTGCTCACATGTTTCTTTTGGCGTTATCCCCTGATTCTGTGGATAACCGCATCTCCGCTTTTGAGTGAGCAGACACCGCTCGCCGCAGCCGAACGACCGAGTGTAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCGGAACGTGCATTTTCTCCTTACGCATCTGTGCGGCATTTCACATCGGACATGGTGCGCTTTCCATACAATTCGTACTGATGCCGCATAGTTAAGCCAGTATACACTCCGCTATCGCTACGTGACTGGTTCAGGGCTTCGCCCCGAAACCCCCTGACGCGCCCTGAGGGGCTTGTCTGCTCCCGGCATCCGCTCACAGACAAGCTGTTACCGTCTCCGGGAGCTGTATGTGTCAGAGGTTTTCACCGTCATCCCCGAAGCGTGCGA"
+#population=Population(20)
+population.fitness(seq)
+population.select_bests()
+population.do_gen()
+#population.mutation()
 
 def test_get_pop():
-    population=Population(20)
     li = population.get_pop()
     assert len(li) == 20
-    assert type(li[0].upd_chr) == dict
-"""def test_get_D():
-    population=Population(20)
-    print(population.get_D())
+    assert type(li[0]) is Chromosome
+test_get_pop()
+
+def test_get_distance():
+    res = population.get_distance()[0]
+    assert type(res) is numpy.float64 or type(res) is float
+test_get_distance()
 
 def test_fitness():
     seq="AAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCCAGTAAACGAAAAAACCGCCTGGGGAGGCGGTTTAGTCGAAGGTTAAGTCAGTTGGGGACTGCTTAACCGGGTAACTGGCTTGGTGGAGCACAGATACCAAATACTGTCCTTCTAGTGTAGCCGCAGTTAGGCCACCACTTCAAGAACTCTTAATATCTCAATCCACCTTGTCCAGTTACCAGTGGCTGCTGCCAGTGGCGCTTTGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAGCCGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTATGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAACGGCGCAGCCTTTTCCTGGTTCTCGTTTTTTGCTCACATGTTTCTTTTGGCGTTATCCCCTGATTCTGTGGATAACCGCATCTCCGCTTTTGAGTGAGCAGACACCGCTCGCCGCAGCCGAACGACCGAGTGTAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCGGAACGTGCATTTTCTCCTTACGCATCTGTGCGGCATTTCACATCGGACATGGTGCGCTTTCCATACAATTCGTACTGATGCCGCATAGTTAAGCCAGTATACACTCCGCTATCGCTACGTGACTGGTTCAGGGCTTCGCCCCGAAACCCCCTGACGCGCCCTGAGGGGCTTGTCTGCTCCCGGCATCCGCTCACAGACAAGCTGTTACCGTCTCCGGGAGCTGTATGTGTCAGAGGTTTTCACCGTCATCCCCGAAGCGTGCGA"
     population=Population(20)
     population.fitness(seq)
-    print(population.get_D())
-
+    res = population.get_distance()
+    assert len(res) == 20
+    assert type(res[0]) is numpy.float64
+test_fitness()
 
 def test_bests():
     population=Population(20)
@@ -24,8 +38,10 @@ def test_bests():
     population=Population(20)
     population.fitness(seq)
     population.select_bests()
-    print(population.get_bests())
-
+    res = population.get_bests()
+    assert len(res) == 20//10
+    assert type(res[0].get_chr()) is dict
+test_bests()
 
 def test_do_gen():
     population=Population(20)
@@ -34,7 +50,9 @@ def test_do_gen():
     population.fitness(seq)
     population.select_bests()
     population.do_gen()
-    print(population.do_gen())
+    res = population.do_gen()
+    assert type(res) is Population
+test_do_gen()
 
 def test_crossover():
     population=Population(20)
@@ -43,9 +61,10 @@ def test_crossover():
     population.fitness(seq)
     population.select_bests()
     population.do_gen()
-    aux=Chrmosome()
-    print(aux.crossover(population.get_indiv(0),population.get_indiv(1)))
-
+    aux=Chromosome()
+    res = aux.crossover(population.get_indiv(0),population.get_indiv(1))
+    assert type(res) is tuple
+test_crossover()
 
 def test_mutation():
     population=Population(20)
@@ -56,5 +75,8 @@ def test_mutation():
     population.select_bests()
     population.do_gen()
     aux=Chromosome()
-    aux.mutation()
-    print(population.get_pop())"""
+    aux.apply_mutation()
+    res = population.get_pop()
+    assert type(res[0]) is Chromosome and type(aux) is Chromosome
+test_mutation()
+
