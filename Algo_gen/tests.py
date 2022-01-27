@@ -4,8 +4,9 @@ from Population import *
 
 def test_get_pop():
     population=Population(20)
-    print(population.get_pop())
+    print(population.get_pop()[0].get_chr())
 
+test_get_pop()
 def test_get_D():
     population=Population(20)
     print(population.get_D())
