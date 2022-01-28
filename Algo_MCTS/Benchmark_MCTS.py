@@ -1,12 +1,11 @@
 import sys  
 from pathlib import Path  
 import time
-
-from Algo_MCTS.MCTS import MCTS
 file = Path(__file__).resolve()  
 package_root_directory = file.parents[1]  
 sys.path.append(str(package_root_directory))
 
+from Algo_MCTS.MCTS import MCTS
 import matplotlib.pyplot as plt
 from os import popen
 from re import A

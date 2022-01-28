@@ -18,7 +18,6 @@ def main(p=2):
         pop_size=40  # It has to be bigger than 20 and a multiple of 4, for example, 40
         algo=Genetic_Algo(pop_size,100,seq,0.01,args)
         algo.darwin()
-
     # Running the Monte Carlo algorithm
     else: 
         a=MCTS(500,seq)
