@@ -1,3 +1,8 @@
+from Algo_MCTS.MCTS import MCTS
+file = Path(__file__).resolve()  
+package_root_directory = file.parents[1]  
+sys.path.append(str(package_root_directory))
+
 from Algo_gen.Chromosome import *
 from Algo_gen.Genetic_Algo import *
 from Algo_gen.Population import *
