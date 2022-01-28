@@ -25,7 +25,8 @@ def main(p=2):
         lineList = [line.rstrip('\n') for line in open(args.filename)]
         # Formatting
         seq = ''.join(lineList[1:])
-        compute(2000,seq)
+        a=MCTS(10,seq)
+        a.draw()
         
 
 if __name__ == "__main__" :
