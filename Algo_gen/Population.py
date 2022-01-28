@@ -33,7 +33,7 @@ class Population:
             trajs[j].compute(self.__seq,self.__pop[j])        #calculates each traj
             xyz = np.array(trajs[j].getTraj())  
             x, y, z = xyz[:,0], xyz[:,1], xyz[:,2]
-            self.__distance[j]=np.sqrt((x[-1])**2+(y[-1])**2+(z[-1])**2)+0.01*(np.dot(xyz[1],xyz[-1]+xyz[-2])+np.linalg.norm(xyz[1])*np.linalg.norm(xyz[-1]+xyz[-2]))#calculates the distance from the tip of the chain to the center
+            self.__distance[j]=np.sqrt((x[-1])**2+(y[-1])**2+(z[-1])**2)+0.01*(np.dot(-xyz[1],xyz[-1]+xyz[-2])+np.linalg.norm(xyz[1])*np.linalg.norm(xyz[-1]+xyz[-2]))#calculates the distance from the tip of the chain to the center
 
     def select_bests(self):
         #Chooses the better 10% of the population
