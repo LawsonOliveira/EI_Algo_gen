@@ -11,13 +11,13 @@ import random
 
 class Population:
     
-    def __init__(self,n,size_dinucle=16):
-        self.__pop_size=n
+    def __init__(self,pop_size,size_dinucle=16):
+        self.__pop_size=pop_size
         self.__distanceinucle_size=size_dinucle
-        self.__pop = [Chromosome() for i in range(n)]
+        self.__pop = [Chromosome() for i in range(pop_size)]
         self.__seq=[]
-        self.__distance=[math.inf for i in range(n)]
-        self.__bests=[None for i in range(n//10)]
+        self.__distance=np.array([math.inf for k in range(pop_size)])
+        self.__bests=[None for i in range(pop_size//10)]
 
     def __str__(self):
         s=[]
@@ -27,8 +27,8 @@ class Population:
 
     def fitness(self,seq):
         self.__seq=seq
-        self.__distance=np.array([math.inf for k in range(self.__pop_size)]) 
-        trajs=[Traj3D() for i in range(self.__pop_size)]         #initialize the trajs                    #initialize the vector that has the distances
+        self.__distance=np.array([math.inf for k in range(self.__pop_size)]) #initialize the vector that has the distances
+        trajs=[Traj3D() for i in range(self.__pop_size)]         #initialize the trajs                    
         for j in range(self.__pop_size):
             trajs[j].compute(self.__seq,self.__pop[j])        #calculates each traj
             xyz = np.array(trajs[j].getTraj())  

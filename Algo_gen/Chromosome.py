@@ -35,7 +35,6 @@ class Chromosome:
             self.__chr = {}
             for dinucleotide in self.__ORIGINAL_ROT_TABLE:
                 # Iniciate the values randomly with a uniform distribution 
-                #self.__chr[dinucleotide] = [np.random.normal(self.__ORIGINAL_ROT_TABLE[dinucleotide][0],self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.normal(self.__ORIGINAL_ROT_TABLE[dinucleotide][1],self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),self.__ORIGINAL_ROT_TABLE[dinucleotide][2]]
                 self.__chr[dinucleotide] = [np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][0]-self.__ORIGINAL_ROT_TABLE[dinucleotide][3],self.__ORIGINAL_ROT_TABLE[dinucleotide][0]+self.__ORIGINAL_ROT_TABLE[dinucleotide][3]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][1]-self.__ORIGINAL_ROT_TABLE[dinucleotide][4],self.__ORIGINAL_ROT_TABLE[dinucleotide][1]+self.__ORIGINAL_ROT_TABLE[dinucleotide][4]),np.random.uniform(self.__ORIGINAL_ROT_TABLE[dinucleotide][2]-self.__ORIGINAL_ROT_TABLE[dinucleotide][5],self.__ORIGINAL_ROT_TABLE[dinucleotide][2]+self.__ORIGINAL_ROT_TABLE[dinucleotide][5])]
         else:
             # Creates a new chromosome with the given chr
@@ -52,8 +51,10 @@ class Chromosome:
         enfant2={}
         for dinucleotide in self.__nucleotidlist:
             # Each gene of each child is chosen randomly between the gene of the chromosome1 and the gene of the chromosome2
-            enfant1[dinucleotide]=random.choice([chromosome1.get_gene(dinucleotide),chromosome2.get_gene(dinucleotide)])
-            enfant2[dinucleotide]=random.choice([chromosome1.get_gene(dinucleotide),chromosome2.get_gene(dinucleotide)])
+            shuffle=[chromosome1.get_gene(dinucleotide),chromosome2.get_gene(dinucleotide)]
+            random.shuffle(shuffle)
+            enfant1[dinucleotide]=shuffle[0]
+            enfant2[dinucleotide]=shuffle[1]
         return enfant1,enfant2
 
     def apply_mutation(self):
