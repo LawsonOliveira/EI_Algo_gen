@@ -32,8 +32,8 @@ class Bench_mark:
         print()
         while nbiteration < self.__nbit and abs(value) > critere:
             backpropagation(root,self.__seq)  # We backpropagation like always
-            print(" nbiteration", nbiteration)
-            print("value", value)
+            print("Iteration:", nbiteration)
+            print("Distance:", value)
             
             nbiteration += 1
             value = root.getvalue()
