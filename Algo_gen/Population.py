@@ -6,7 +6,7 @@ sys.path.append(str(package_root_directory))
 
 from Algo_gen.Chromosome import *
 import numpy as np
-from Traj3D import *
+from Algo_gen.Traj3D import *
 import random
 
 class Population:

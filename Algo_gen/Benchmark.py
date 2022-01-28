@@ -10,7 +10,7 @@ from os import popen
 from re import A
 from Algo_gen.Population import *
 
-class Benchmark:
+class Benchmark_AG:
     def __init__(self,size,max_iter,seq,dist_max):
         self.__pop_size = size          # size is the population size
         self.__max_iter=max_iter        # max_iter is the maximum number of interactions
@@ -85,13 +85,13 @@ def plot_benchmark():
     archive.close()
 
     # It makes a benchmark test for each sequences
-    benchmark_512=Benchmark(40,250,seq_512,0.01)
+    benchmark_512=Benchmark_AG(40,250,seq_512,0.01)
     time_512,distance_512,iteration_512=benchmark_512.darwin()
 
-    benchmark_8k=Benchmark(40,250,seq_8k,0.01)
+    benchmark_8k=Benchmark_AG(40,250,seq_8k,0.01)
     time_8k,distance_8k,iteration_8k=benchmark_8k.darwin()
 
-    benchmark_180k=Benchmark(40,250,seq_180k,0.01)
+    benchmark_180k=Benchmark_AG(40,250,seq_180k,0.01)
     time_180k,distance_180k,iteration_180k=benchmark_180k.darwin()
 
     # Graph_distance X Iteration plot

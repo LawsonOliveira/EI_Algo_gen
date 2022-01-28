@@ -1,63 +1,64 @@
-# ST2 (Théorie des Jeux) - EI Algorithmique Génétique
+# ST2 (Game Theory) - IE Genetic Algorithms
 
 # Description 
 
-Création de deux programmes pour rendre um plasmide circulaire en utilisant programmation orienté á objet.
+Created two programs to make um plasmid circular using object oriented programming.
 
-# Membres de l'équipe : 
-- Oliveira Lima Lawson
-- 
-- 
-- 
+# Team members: 
+- Lawson OLIVEIRA LIMA
+- Ahmed EL BAJDALI
+- Pierrick BOURNEZ 
+- osvaldo CARTAGENA
 
-# Projet : Codage d'un jeu de sudoku
+# Project: Coding a sudoku game
 
-But du projet : L'objectif est d'utiliser deux approches différentes pour rendre une séquence d'adn circulaire, plus specificment, l'algorithme Monte Carlo Tree Search et algoritmhs genetique.
+Project goal: The objective is to use two different approaches to render a circular DNA sequence, more specifically, the Monte Carlo Tree Search algorithm and genetic algorithms.
 
 ###########################################################################################################
 
-# Voici les modules qu'il est nécessaire d'importer pour utiliser notre projet
+# Here are the modules that need to be imported to use our project
 
 - mathutils
 - numpy
 - matplotlib
 
-# Utilisation de notre projet
+# Using our project
 
-Se placer dans le fichier sudoku_game_by_team6/Sudoku_MVP_lignes_de_commande.py et l'exécuter.
-
-Vous aurez le choix entre reprendre une partie sauvegardée et une nouvelle partie. Vous aurez aussi la possibilité de choisir le niveau de difficulté de la grille, ainsi que les dimensions de celle-ci. Une fois la grille affichée, vous pourrez remplir une case en rentrant sa valeur dans le terminal, ainsi que ses coordonnées. Vous pouvez à tout moment sauvegarder et quitter la partie, ou simplement abandonner. Si vous abandonnez, la solution de la grille s'affichera dans le terminal.
-
+To use our project, you need to run the main file and choose the algorithm you want to use, MCTS or Genetic Algorithm
 
 ###########################################################################################################
-# Organisation des fichiers et modules
+# Organization of files and modules
 
-- Algo_gen : ce dossier contient les codes du Algorithm Genetique
-    - Benchmark : ce fichier containt notre class de benchmark pour l'ago genetique
-    - Chromosome : ce fichier containt notre Chromosoome, elle represente un ensemble de 16 gènes
-    - Population : ce fichier containt notre Population, elle represente un ensemble de 100 chromosomes
-    - Genetics Algo : ce fichier containt notre fonction qu'utilise les classes, elle faire la liason entre les principales fonctions
-    - Traj3D : ce fichier containt notre fonction que applique chaque individu de la population (notre chromosome) dans la séquence d'adn
-    - Test : ce dossier contient tous les tests qu'on a faits pour Algorithme Genetique
+- Algo_gen : this file contains the codes of the Genetic Algorithm
+    - Benchmark_GA : this file contains our benchmark class for the genetic ago
+    - Chromosome : this file contains our Chromosoome, it represents a set of 16 genes
+    - Population : this file contains our Population, it represents a set of 100 chromosomes
+    - Genetics Algo : this file contains our main class used by the other classes, it makes the link between the main functions
+    - Traj3D : this file contains our function that applies each individual of the population (our chromosome) in the dna sequence
+    - Test : this file contains all the tests we made for Genetic Algorithm
 
-- Solutions_Genetics_Algo : ce dossier contient les solutions obtenus en utilisant un algorithme genetique
+- Solutions_Genetics_Algo : this folder contains the solutions obtained using a genetic algorithm
 
-- Solutions_Monte_Carlo : ce dossier contient les solutions obtenus en utilisant le MCTS
+- Solutions_Monte_Carlo : this folder contains the solutions obtained using the MCTS
 
-- Monte_Carlo : ce dossier contient les codes du MCTS
-
-###########################################################################################################
-
-# Nos points fortes
-    - Deux programmes très puissance qui obtient des solution optimales
-    - Un façon différent de faire le crossover 
-    - Des fonctions objectives qui augment la qualité de la solution
-
+- Algo_MCTS : this folder contains the MCTS codes
+    - Benchmark_MCTS : this file contains our benchmark class for the Monte Carlo Tree Search
+    - Monte_Carlo_functions : this file contains the functions used for the MCTSomosoome, it represents a set of 16 genes
+    - MCTS : this file contains our main class used by the other classes, it makes the link between the main functions
+    - Node : this file contains our class that defines the nodes of the tree
 
 ###########################################################################################################
 
-# Suggestions pour améliorer notre projet à l'avenir
-    - Ajouter une fonction de créer plusieurs populations initialles et ensuite faire un tournoi pour choisir la premier population
-    - Ajouter un bouton pour annuler un mouvement
-    - Ajouter des modes de jeu pour grilles 16x16 et 25x25
+# Our strong points
+    - Two very powerful programs that obtain optimal solutions
+    - An efficient way to do the crossover 
+    - Objective functions that increase the quality of the solution
+
+
+###########################################################################################################
+
+# Suggestions to improve our project in the future
+    - Slightly improve the fit function 
+    - The constant c for the fit function should be more deeply analywe 
+    - As the fit function is differentiable, some other algorithm would be more efficient 
 
