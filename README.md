@@ -65,3 +65,4 @@ To use our project, you need to run the main file and choose the algorithm you w
     - The constant c for the fit function should be more deeply analywe 
     - As the fit function is differentiable, some other algorithm would be more efficient 
 
+# The results of the genetic algorithm were obtained for a population of 40 individuals
