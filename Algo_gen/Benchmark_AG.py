@@ -100,7 +100,7 @@ def plot_benchmark():
     plt.ylabel('Best distance')
     plt.title('Best distance x Iteration')
     plt.plot(iteration_512,distance_512,'b',iteration_8k,distance_8k,'r',iteration_180k,distance_180k,'g')
-    plt.legend(['512 dinucleotides',"8k nucleotides","180k dinucleotides"])
+    plt.legend(['512 nucleotides',"8k nucleotides","180k nucleotides"])
     plt.savefig("Graph_distanceXiteration_AG.png",format='png')
     plt.show()
 
@@ -110,7 +110,7 @@ def plot_benchmark():
     plt.ylabel('Best distance')
     plt.title('Best distance x Time')
     plt.plot(time_512,distance_512,'b',time_8k,distance_8k,'r',time_180k,distance_180k,'g')
-    plt.legend(['512 dinucleotides',"8k dinucleotides","180k dinucleotides"])
+    plt.legend(['512 nucleotides',"8k nucleotides","180k nucleotides"])
     plt.savefig("Graph_distanceXtime_AG.png",format='png')
     plt.show()
 

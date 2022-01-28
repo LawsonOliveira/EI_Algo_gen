@@ -76,7 +76,7 @@ def plots():
     plt.ylabel('Best distance')
     plt.title('Best distance x Iteration')
     plt.plot(iteration_512,distance_512,'b',iteration_8k,distance_8k,'r',iteration_180k,distance_180k,'g')
-    plt.legend(['512 dinucleotides',"8k dinucleotides","180k dinucleotides"])
+    plt.legend(['512 nucleotides',"8k nucleotides","180k nucleotides"])
     plt.savefig("Graph_distanceXiteration_MCTS.png",format='png')
     plt.show()
 

@@ -1,6 +1,6 @@
-from Chromosome import *
-from GA import *
-from Population import *
+from Algo_gen.Chromosome import *
+from Algo_gen.Genetic_Algo import *
+from Algo_gen.Population import *
 import numpy
 
 population=Population(20)
