@@ -47,6 +47,9 @@ To use our project, you need to run the main file and choose the algorithm you w
     - MCTS : this file contains our main class used by the other classes, it makes the link between the main functions
     - Node : this file contains our class that defines the nodes of the tree
 
+- Algo_MCTS : this file contains the function test
+
+
 ###########################################################################################################
 
 # Our strong points
