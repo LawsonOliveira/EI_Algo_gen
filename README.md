@@ -1,43 +1,63 @@
 # ST2 (Théorie des Jeux) - EI Algorithmique Génétique
 
-![CentraleSupelec Logo](https://www.centralesupelec.fr/sites/all/themes/cs_theme/medias/common/images/intro/logo_nouveau.jpg)
+# Description 
 
-## Contexte
-Toutes les cellules qui constituent la vie sur Terre comportent en elles une ou plusieurs molécules d'ADN qui sont le support de l'information génétique. Ces molécules, plus ou moins longues, sont composées d'une succession de nucléotides (ou bases : A, C, G et T) qui interagissent avec de nombreux éléments cellulaires et dont le positionnement dans l'espace joue un rôle important dans l'adaptation de la cellule à son environnement (chaleur, famine, stress...). Si les séquences d'ADN sont aujourd'hui très largement étudiées à travers leur séquence textuelle (succession de A, C, G et T), il est très instructif de les étudier à partir de leur trajectoire tri-dimensionnelle. En 1993, des biopysiciens ont établi un modèle de conformation 3D qui permet de transformer une suite de nucléotides (sous forme de lettres) en une trajectoire tri-dimensionnelle. Dès lors, il est possible de représenter toute séquence textuelle d'ADN en une trajectoire 3D.
+Création de deux programmes pour rendre um plasmide circulaire en utilisant programmation orienté á objet.
 
-<img src="documents/RotTable.png" alt="Rotation Table" width="45%"/><img src="documents/Traj3D.png" alt="3D Trajectory Building" width="55%"/>
+# Membres de l'équipe : 
+- Oliveira Lima Lawson
+- 
+- 
+- 
 
-## Problématique
-Ce modèle ayant été développé pour de courtes séquences d'ADN nu, il ne prend pas en compte toutes les caractéristiques d'une longue chaîne au sein de la cellule (surenroulements, nucléosomes, interactions longue distance...). Par exemple, si on observe un chromosome bactérien (longue séquence d'ADN constituant une bactérie) ou un plasmide (petite séquence présente au sein des bactéries), on s'aperçoit que ce chromosome ou ce plasmide est circulaire, i.e. les deux extrémités ont été "collées" l'une à l'autre. Le modèle pré-cité ne rend pas compte de ce phénomène lorsque l'on représente la trajectoire 3D d'un chromosome bactérien ou d'un plasmide.
+# Projet : Codage d'un jeu de sudoku
 
-## Énoncé
-L'objectif de ce projet est de modifier le modèle de conformation 3D donné afin de rendre un plasmide circulaire. Pour cela, deux algorithmes seront développés : un algorithme génétique et un algorithme de type Monte-Carlo Tree Search. Ces algorithmes seront implantés en Python et structurés en classes (programmation orientée objet).
+But du projet : L'objectif est d'utiliser deux approches différentes pour rendre une séquence d'adn circulaire, plus specificment, l'algorithme Monte Carlo Tree Search et algoritmhs genetique.
 
-Le projet est à réaliser en groupes de maximum 5 personnes.
+###########################################################################################################
 
-## Livrables
+# Voici les modules qu'il est nécessaire d'importer pour utiliser notre projet
 
-- le **code source** du programme avec son manuel utilisateur,
-- le **rapport** décrivant le fonctionnement global de l'algorithme, la structuration du code ainsi que les paramètres choisis et les stratégies mises en place,
-- la **soutenance** finale présentant le travail effectué.
+- mathutils
+- numpy
+- matplotlib
 
-## Évaluation
+# Utilisation de notre projet
 
-Seront évalués :
+Se placer dans le fichier sudoku_game_by_team6/Sudoku_MVP_lignes_de_commande.py et l'exécuter.
 
-- la pertinence des choix effectués pour concevoir l'algorithme (paramètres, stratégies),
-- la qualité du code (structuration, optimisation, commentaires),
-- la généricité de l'algorithme,
-- les tests unitaires ainsi que leur couverture,
-- les résultats (qualité de la fermeture du chromosome étudié, temps d'exécution moyen...),
-- la qualité et la clarté de la présentation orale du projet.
+Vous aurez le choix entre reprendre une partie sauvegardée et une nouvelle partie. Vous aurez aussi la possibilité de choisir le niveau de difficulté de la grille, ainsi que les dimensions de celle-ci. Une fois la grille affichée, vous pourrez remplir une case en rentrant sa valeur dans le terminal, ainsi que ses coordonnées. Vous pouvez à tout moment sauvegarder et quitter la partie, ou simplement abandonner. Si vous abandonnez, la solution de la grille s'affichera dans le terminal.
 
-## Ressources
 
-Sont fournis :
+###########################################################################################################
+# Organisation des fichiers et modules
 
-- le fichier <tt>Traj3D.py</tt> implémentant le moteur de calcul d'une trajectoire 3D,
-- le fichier <tt>Rot_Table.py</tt> contenant la table de rotations nécessaires au calcul d'une trajectoire 3D (ce fichier devra être modifié),
-- le fichier <tt>Main.py</tt> illustrant un exemple d'utilisation de la classe Traj3D,
-- deux fichiers <tt>.fasta</tt> contenant les séquences de deux plasmides de longueur différente (8 000 dans un cas et 180 000 dans l'autre).
+- Algo_gen : ce dossier contient les codes du Algorithm Genetique
+    - Benchmark : ce fichier containt notre class de benchmark pour l'ago genetique
+    - Chromosome : ce fichier containt notre Chromosoome, elle represente un ensemble de 16 gènes
+    - Population : ce fichier containt notre Population, elle represente un ensemble de 100 chromosomes
+    - Genetics Algo : ce fichier containt notre fonction qu'utilise les classes, elle faire la liason entre les principales fonctions
+    - Traj3D : ce fichier containt notre fonction que applique chaque individu de la population (notre chromosome) dans la séquence d'adn
+    - Test : ce dossier contient tous les tests qu'on a faits pour Algorithme Genetique
+
+- Solutions_Genetics_Algo : ce dossier contient les solutions obtenus en utilisant un algorithme genetique
+
+- Solutions_Monte_Carlo : ce dossier contient les solutions obtenus en utilisant le MCTS
+
+- Monte_Carlo : ce dossier contient les codes du MCTS
+
+###########################################################################################################
+
+# Nos points fortes
+    - Deux programmes très puissance qui obtient des solution optimales
+    - Un façon différent de faire le crossover 
+    - Des fonctions objectives qui augment la qualité de la solution
+
+
+###########################################################################################################
+
+# Suggestions pour améliorer notre projet à l'avenir
+    - Ajouter une fonction de créer plusieurs populations initialles et ensuite faire un tournoi pour choisir la premier population
+    - Ajouter un bouton pour annuler un mouvement
+    - Ajouter des modes de jeu pour grilles 16x16 et 25x25
 
