@@ -11,8 +11,8 @@ from re import A
 from Algo_gen.Population import *
 
 class Benchmark:
-    def __init__(self,size,max_iter,seq,dist_max):
-        self.__pop_size = size          # size is the population size
+    def __init__(self,pop_size,max_iter,seq,dist_max):
+        self.__pop_size = pop_size      # pop_size is the population size. It has to be bigger than 20 and a multiple of 4, for example, 40
         self.__max_iter=max_iter        # max_iter is the maximum number of interactions
         self.__max_dist=dist_max        # dist_max is the maximum distance acceptable    
         self.__seq=seq                  # seq is a gene sequence

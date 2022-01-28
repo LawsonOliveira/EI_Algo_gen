@@ -10,9 +10,9 @@ from Algo_gen.Population import *
 
 # This class represents genetics algorithm
 class Genetics_Algo:
-    def __init__(self,size,max_iter,seq,dist_max,args=None):
+    def __init__(self,pop_size,max_iter,seq,dist_max,args=None):
                                         # seq is a gene sequence
-        self.__pop_size = size          # size is the population size
+        self.__pop_size = pop_size      # pop_size is the population size. size has to ge bigger than 20 and a multiple of 4, for example, 40
         self.__max_iter=max_iter        # max_iter is the maximum number of interactions
         self.__args=args                # args is the argparse arguments
         self.__max_dist=dist_max        # dist_max is the maximum distance acceptable    
@@ -42,14 +42,14 @@ class Genetics_Algo:
 
         traj=Traj3D()
         if self.__args.filename:                            # Graph plot of a input file in the terminal
-            archive = open(self.__args.filename+"_solution_.fasta",'w')
+            archive = open(self.__args.filename+"_solution_AG.fasta",'w')
             archive.write(str(best.get_chr()))
             archive.close()
             traj.compute(self.__seq,best)
-            traj.draw(self.__args.filename+".png")
+            traj.draw(self.__args.filename+"_AG.png")
 
         else:                                               # Graph plot of a sequence in the main fonction
-            archive = open("exemple"+"_solution_.fasta",'w')
+            archive = open("sample"+"_solution_AG.fasta",'w')
             archive.write(str(best.get_chr()))
             archive.close()
             traj.compute(self.__seq,best)

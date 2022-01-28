@@ -10,14 +10,14 @@ from Traj3D import *
 import random
 
 class Population:
-    
-    def __init__(self,n,size_dinucle=16):
-        self.__pop_size=n
+    # pop_size has to be bigger than 20 and a multiple of 4, for example, 40
+    def __init__(self,pop_size,size_dinucle=16):
+        self.__pop_size=pop_size                
         self.__distanceinucle_size=size_dinucle
-        self.__pop = [Chromosome() for i in range(n)]
+        self.__pop = [Chromosome() for i in range(pop_size)]
         self.__seq=[]
-        self.__distance=[math.inf for i in range(n)]
-        self.__bests=[None for i in range(n//10)]
+        self.__distance=np.array([math.inf for k in range(self.__pop_size)]) 
+        self.__bests=[None for i in range(pop_size//10)]
 
     def __str__(self):
         s=[]
